@@ -26,6 +26,7 @@ public class Appointment implements Serializable{
     private Status status;
     private String notes;
     private Float prix;
+
     @OneToOne
     private Pet pet;
 

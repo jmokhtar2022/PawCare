@@ -1,6 +1,5 @@
 package com.example.pawcare.Entities;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,23 +10,23 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Adoption {
+public class Training {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAdoption;
-    private String description;
-    private int nbDemande;
-    private int nbLikes;
+    private long idTraining;
+    private long duration;
+    private float price;
+    private int nbrplaces;
+    private Type type;
     @Temporal(TemporalType.DATE)
     private Date cDate;
-    private String location;
 
-    @OneToOne
-    private Pet pet;
-
+    @ManyToMany(mappedBy = "trainings")
+    private List<Pet> pets;
 
 
 
 }
+

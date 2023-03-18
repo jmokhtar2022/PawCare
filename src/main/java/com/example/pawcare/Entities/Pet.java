@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,6 +23,15 @@ public class Pet implements Serializable {
     private String color;
     private String picture;
     private Situation situation;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
+
+   @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
     private Appointment appointment;
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
+    private Adoption adoption;
+
+    @ManyToMany
+    private List<Training> trainings;
+
+
 }
