@@ -18,9 +18,15 @@ public class Appointment implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAppointment;
     @Temporal(TemporalType.DATE)
-    private Date date;
+    private Date startDate;
+    @Temporal(TemporalType.DATE)
+    private Date endDate;
     private Reason reason;
     private Location Location;
     private Status status;
     private String notes;
+    private Float prix;
+    @OneToOne
+    private Pet pet;
+
 }

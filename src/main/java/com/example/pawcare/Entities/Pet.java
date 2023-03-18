@@ -2,10 +2,7 @@ package com.example.pawcare.Entities;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
@@ -25,4 +22,6 @@ public class Pet implements Serializable {
     private String color;
     private String picture;
     private Situation situation;
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
+    private Appointment appointment;
 }
