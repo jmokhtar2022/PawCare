@@ -14,6 +14,13 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 public class Appointment implements Serializable{
+
+    @OneToOne
+    private Pet pet;
+
+    @ManyToOne
+    private User user;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAppointment;
@@ -27,7 +34,5 @@ public class Appointment implements Serializable{
     private String notes;
     private Float prix;
 
-    @OneToOne
-    private Pet pet;
 
 }

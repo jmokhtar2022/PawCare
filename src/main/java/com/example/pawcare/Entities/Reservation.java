@@ -1,35 +1,31 @@
 package com.example.pawcare.Entities;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Adoption implements Serializable {
+public class Reservation implements Serializable {
 
-    @OneToOne
+    @ManyToOne
+    private Hotel hotel;
+
+    @ManyToOne
     private Pet pet;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAdoption;
-    private String description;
-    private int nbDemande;
-    private int nbLikes;
+    private Long idReservation;
     @Temporal(TemporalType.DATE)
-    private Date cDate;
-    private String location;
-
-
-
-
-
+    private Date checkin;
+    @Temporal(TemporalType.DATE)
+    private Date checkout;
+    private Status status;
+    private String specialrequests;
 
 }

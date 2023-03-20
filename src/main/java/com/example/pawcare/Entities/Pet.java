@@ -13,6 +13,20 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class Pet implements Serializable {
+
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
+   private Appointment appointment;
+
+   @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
+   private Adoption adoption;
+
+   @ManyToMany
+   private List<Training> trainings;
+
+   @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
+   private List<Reservation> reservations;
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPet;
@@ -24,14 +38,6 @@ public class Pet implements Serializable {
     private String picture;
     private Situation situation;
 
-   @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
-    private Appointment appointment;
-
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
-    private Adoption adoption;
-
-    @ManyToMany
-    private List<Training> trainings;
 
 
 }

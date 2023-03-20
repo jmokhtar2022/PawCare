@@ -4,14 +4,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Training {
+public class Training implements Serializable {
 
+    @ManyToMany(mappedBy = "trainings")
+    private List<Pet> pets;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +26,7 @@ public class Training {
     @Temporal(TemporalType.DATE)
     private Date cDate;
 
-    @ManyToMany(mappedBy = "trainings")
-    private List<Pet> pets;
+
 
 
 

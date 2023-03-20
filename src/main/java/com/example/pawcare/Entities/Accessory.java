@@ -1,35 +1,26 @@
 package com.example.pawcare.Entities;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
-public class Adoption implements Serializable {
+public class Accessory implements Serializable {
 
-    @OneToOne
-    private Pet pet;
+    @ManyToMany(mappedBy = "accessories", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Cart> carts;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAdoption;
+    private Long idAccessory;
+    private String name;
+    private float price;
     private String description;
-    private int nbDemande;
-    private int nbLikes;
-    @Temporal(TemporalType.DATE)
-    private Date cDate;
-    private String location;
-
-
-
-
-
+    private String image;
 
 }
