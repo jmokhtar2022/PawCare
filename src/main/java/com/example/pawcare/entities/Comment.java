@@ -1,4 +1,4 @@
-package com.example.pawcare.Entities;
+package com.example.pawcare.entities;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,22 +10,19 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
-public class Reservation implements Serializable {
+public class Comment implements Serializable {
 
     @ManyToOne
-    private Hotel hotel;
-
-    @ManyToOne
-    private Pet pet;
+    private Article article;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idReservation;
+    private Long idComment;
+    private String content;
+    private String blockedwords;
+    private int nblike;
     @Temporal(TemporalType.DATE)
-    private Date checkin;
+    private Date created_at;
     @Temporal(TemporalType.DATE)
-    private Date checkout;
-    private Status status;
-    private String specialrequests;
-
+    private Date updated_at;
 }

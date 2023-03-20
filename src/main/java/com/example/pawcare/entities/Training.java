@@ -1,5 +1,4 @@
-package com.example.pawcare.Entities;
-
+package com.example.pawcare.entities;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -12,24 +11,24 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Adoption implements Serializable {
+public class Training implements Serializable {
 
-    @OneToOne
-    private Pet pet;
+    @ManyToMany(mappedBy = "trainings")
+    private List<Pet> pets;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idAdoption;
-    private String description;
-    private int nbDemande;
-    private int nbLikes;
+    private long idTraining;
+    private long duration;
+    private float price;
+    private int nbrplaces;
+    private Type type;
     @Temporal(TemporalType.DATE)
     private Date cDate;
-    private String location;
-
 
 
 
 
 
 }
+

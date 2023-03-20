@@ -1,4 +1,4 @@
-package com.example.pawcare.Entities;
+package com.example.pawcare.entities;
 
 public enum Reason {
     RoutineCheckup,
