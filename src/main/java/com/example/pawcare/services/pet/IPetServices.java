@@ -1,4 +1,4 @@
-package com.example.pawcare.services.appointment.pet;
+package com.example.pawcare.services.pet;
 
 
 import com.example.pawcare.entities.Pet;

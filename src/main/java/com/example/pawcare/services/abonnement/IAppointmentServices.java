@@ -1,4 +1,4 @@
-package com.example.pawcare.services.appointment;
+package com.example.pawcare.services.abonnement;
 
 import com.example.pawcare.entities.Appointment;
 

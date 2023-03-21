@@ -1,7 +1,7 @@
 package com.example.pawcare.controllers;
 
 import com.example.pawcare.entities.Appointment;
-import com.example.pawcare.services.appointment.AppointmentServicesImp;
+import com.example.pawcare.services.abonnement.AppointmentServicesImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
