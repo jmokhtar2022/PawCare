@@ -342,7 +342,7 @@ java.lang.RuntimeException: Appointment conflicts with existing appointments
 2023-03-22 01:03:09.077 ERROR 8628 --- [http-nio-8080-exec-1] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is java.lang.RuntimeException: Pet not found with idPet: 1] with root cause
 
 java.lang.RuntimeException: Pet not found with idPet: 1
-	at com.example.pawcare.services.appointment.pet.PetServicesImp.UpdatePet(PetServicesImp.java:34) ~[classes/:na]
+	at com.example.pawcare.services.pet.PetServicesImp.UpdatePet(PetServicesImp.java:34) ~[classes/:na]
 	at com.example.pawcare.controllers.PetRestController.ModifyPet(PetRestController.java:24) ~[classes/:na]
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_321]
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[na:1.8.0_321]
