@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/appointment")
+@CrossOrigin(origins = "*")
 public class AppointmentRestController {
 
     @Autowired
@@ -19,10 +20,10 @@ public class AppointmentRestController {
     {
         return appointmentServicesImp.AddAppointment(appointment);
     }
-    @PutMapping("/updateAppointment")
-    public Appointment modifyAppointment(@RequestBody Appointment appointment)
+    @PutMapping("/updateAppointment/{id}")
+    public Appointment modifyAppointment(@PathVariable("id")Long idAppointment, @RequestBody Appointment appointment)
     {
-        return appointmentServicesImp.UpdateAppointment(appointment);
+        return appointmentServicesImp.UpdateAppointment(idAppointment,appointment);
     }
     @DeleteMapping("/deleteAppointment/{id}")
     public void RemoveAppointment(@PathVariable("id")Long idAppointment)
@@ -33,5 +34,11 @@ public class AppointmentRestController {
     public List<Appointment>RetrieveAllAppointments()
     {
         return appointmentServicesImp.GetAllAppointments();
+    }
+
+    @GetMapping("/GetAppointment/{id}")
+    public Appointment RetrieveAAppointmentByid(@PathVariable("id")Long idAppointment)
+    {
+        return appointmentServicesImp.GetAppointmentById(idAppointment);
     }
 }

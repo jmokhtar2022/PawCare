@@ -18,10 +18,10 @@ public class PetRestController {
     {
         return petServicesImp.AddPet(pet);
     }
-    @PutMapping("/updatePet")
-    public Pet ModifyPet(@RequestBody Pet pet)
+    @PutMapping("/updatePet/{id}")
+    public Pet ModifyPet(@RequestBody Pet pet,@PathVariable("id")Long idPet)
     {
-        return petServicesImp.UpdatePet(pet);
+        return petServicesImp.UpdatePet(pet,idPet);
     }
     @DeleteMapping("/deletePet/{id}")
     public void RemovePet(@PathVariable("id") Long idPet)
@@ -33,4 +33,10 @@ public class PetRestController {
     {
         return petServicesImp.GetAllPets();
     }
+    @GetMapping("/GetPet/{id}")
+    public Pet RetrievePetById(@PathVariable("id") Long Idpet)
+    {
+        return petServicesImp.GetPetById(Idpet);
+    }
+
 }

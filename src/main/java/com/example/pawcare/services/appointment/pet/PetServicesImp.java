@@ -18,8 +18,23 @@ public class PetServicesImp implements IPetServices{
     }
 
     @Override
-    public Pet UpdatePet(Pet pet) {
-        return petRepository.save(pet);
+    public Pet UpdatePet(Pet updatePet,Long idPet) {
+
+        Pet existingPet = petRepository.findById(idPet).orElse(null);
+        if (existingPet!=null) {
+            existingPet.setName(updatePet.getName());
+            existingPet.setSpecie(updatePet.getSpecie());
+            existingPet.setGender(updatePet.getGender());
+            existingPet.setWeight(updatePet.getWeight());
+            existingPet.setColor(updatePet.getColor());
+            existingPet.setPicture(updatePet.getPicture());
+            existingPet.setSituation(updatePet.getSituation());
+            petRepository.save(existingPet);
+        } else {
+            throw new RuntimeException("Pet not found with idPet: " + idPet);
+        }
+
+        return existingPet;
     }
 
     @Override
@@ -30,5 +45,9 @@ public class PetServicesImp implements IPetServices{
     @Override
     public List<Pet> GetAllPets() {
         return petRepository.findAll();
+    }
+    @Override
+    public Pet GetPetById(Long idPet) {
+        return petRepository.findById(idPet).get();
     }
 }
