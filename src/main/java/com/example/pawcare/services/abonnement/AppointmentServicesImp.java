@@ -1,10 +1,11 @@
-package com.example.pawcare.services.appointment;
+package com.example.pawcare.services.abonnement;
 
 import com.example.pawcare.entities.Appointment;
 import com.example.pawcare.entities.Status;
 import com.example.pawcare.repositories.IAppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDateTime;
 import java.util.List;
 

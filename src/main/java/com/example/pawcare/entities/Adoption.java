@@ -19,6 +19,7 @@ public class Adoption implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idAdoption;
+    private String title;
     private String description;
     private int nbDemande;
     private int nbLikes;
