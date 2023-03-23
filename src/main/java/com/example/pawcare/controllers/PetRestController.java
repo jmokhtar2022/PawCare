@@ -5,6 +5,7 @@ import com.example.pawcare.services.pet.PetServicesImp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -14,13 +15,11 @@ public class PetRestController {
     PetServicesImp petServicesImp;
 
     @PostMapping("/addPet")
-    public Pet AppendPet(@RequestBody Pet pet)
-    {
+    public Pet AppendPet(@RequestBody Pet pet) throws IOException {
         return petServicesImp.AddPet(pet);
     }
     @PutMapping("/updatePet/{id}")
-    public Pet ModifyPet(@RequestBody Pet pet,@PathVariable("id")Long idPet)
-    {
+    public Pet ModifyPet(@RequestBody Pet pet,@PathVariable("id")Long idPet) throws IOException {
         return petServicesImp.UpdatePet(pet,idPet);
     }
     @DeleteMapping("/deletePet/{id}")

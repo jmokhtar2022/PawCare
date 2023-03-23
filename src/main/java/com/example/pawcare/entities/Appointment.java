@@ -25,12 +25,12 @@ public class Appointment implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idAppointment;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "start_date", columnDefinition="DATETIME")
 //    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime startDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     @Column(name = "end_date", columnDefinition="DATETIME")
 //    @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime endDate;
