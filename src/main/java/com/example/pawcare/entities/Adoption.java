@@ -1,11 +1,13 @@
 package com.example.pawcare.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -23,9 +25,11 @@ public class Adoption implements Serializable {
     private String description;
     private int nbDemande;
     private int nbLikes;
-    @Temporal(TemporalType.DATE)
-    private Date cDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
+    private LocalDateTime cDate;
     private String location;
+    @Lob
+    private byte[] file;
 
 
 

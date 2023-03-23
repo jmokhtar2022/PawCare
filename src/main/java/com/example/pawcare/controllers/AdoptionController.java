@@ -6,6 +6,8 @@ import com.example.pawcare.services.adoption.IAdoptionServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -17,7 +19,10 @@ public class AdoptionController {
 
     @PostMapping("/adoption")
     public Adoption AddAdoption(@RequestBody Adoption adoption)
-    {return adoptionServices.AddAdoption(adoption);}
+    {
+        LocalDateTime currentDate = LocalDateTime.now();
+        adoption.setCDate(currentDate);
+        return adoptionServices.AddAdoption(adoption);}
 
     @GetMapping("/adoption")
     public List<Adoption> ListAdoption()
@@ -33,7 +38,11 @@ public class AdoptionController {
 
     @PutMapping("/adoption/{id}")
     public Adoption UpdateAdoption (@PathVariable("id") long id,@RequestBody Adoption adoption)
-    {Adoption a=adoptionServices.RetrieveAdoptionById(id);
+    {   LocalDateTime currentDate = LocalDateTime.now();
+        Adoption a=adoptionServices.RetrieveAdoptionById(id);
         a.setDescription(adoption.getDescription());
+        a.setLocation(adoption.getLocation());
+        a.setTitle(adoption.getTitle());
+        adoption.setCDate(currentDate);
         return adoptionServices.UpdateAdoption(adoption);}
 }
