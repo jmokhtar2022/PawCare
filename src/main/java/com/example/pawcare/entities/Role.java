@@ -1,22 +1,39 @@
 package com.example.pawcare.entities;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.List;
 
 @Entity
-@Getter
-@Setter
-public class Role implements Serializable {
-
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
-
+@Table(name = "roles")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private Roles roleName;
+    private Integer id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
+    private Roles name;
+
+    public Role() {
+
+    }
+
+    public Role(Roles name) {
+        this.name = name;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Roles getName() {
+        return name;
+    }
+
+    public void setName(Roles name) {
+        this.name = name;
+    }
 }

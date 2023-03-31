@@ -1,10 +1,11 @@
 package com.example.pawcare.entities;
 
 public enum Roles {
-    Client
-    ,Association
-    , Veterinary
-    ,Admin
+    ROLE_CLIENT
+
+    , ROLE_VETERINARY
+
+    ,ROLE_ADMIN
 
 
 }
