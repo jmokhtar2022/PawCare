@@ -13,4 +13,8 @@ public interface IAppointmentRepository extends JpaRepository<Appointment,Long> 
     @Query("SELECT a FROM Appointment a WHERE a.endDate > :startDate AND a.startDate < :endDate")
     List<Appointment> findConflictingAppointments(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
+    List<Appointment> findByPetNameLike(String name);
+
+    @Query("SELECT COUNT(e) FROM Appointment e WHERE e.createdAt >= :startTime")
+    long countByCreatedAtAfter(LocalDateTime startTime);
 }

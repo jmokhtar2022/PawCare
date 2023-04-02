@@ -19,7 +19,6 @@ public class Training implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idTraining;
-    private String title;
     private long duration;
     private float price;
     private int nbrplaces;
