@@ -22,5 +22,8 @@ public class Hotel implements Serializable {
     private String nomHotel;
     private String address;
     private int numtel;
+    @Lob
+    @Column(name = "data", columnDefinition = "LONGBLOB")
+    private byte[] data;
 
 }

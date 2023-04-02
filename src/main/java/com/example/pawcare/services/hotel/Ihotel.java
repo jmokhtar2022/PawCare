@@ -14,4 +14,5 @@ public interface Ihotel {
     Hotel retrieveHotel(Long hotelId);
 
     void removeHotel(Long hotelId);
+
 }
