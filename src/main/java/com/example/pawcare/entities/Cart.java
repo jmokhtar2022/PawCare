@@ -14,8 +14,10 @@ public class Cart implements Serializable {
     @OneToOne
     private Item item;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Accessory> accessories;
+    @OneToOne(cascade = CascadeType.ALL)
+    private User user;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCart;

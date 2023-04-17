@@ -24,6 +24,6 @@ public class Item implements Serializable {
     private LocalDate date;
     private float deliveryPrice;
     private String trackingCode;
-    private Status status;
+    private OrderStatus orderstatus;
     private float totalItem;
 }
