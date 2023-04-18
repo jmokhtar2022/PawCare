@@ -7,7 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public interface IUserService {
-     abstract List<User> retrieveAllUsers();
+     List<User> retrieveAllUsers();
 
      User addUser(User user);
 
@@ -17,7 +17,7 @@ public interface IUserService {
 
      User retrieveUser(Long id);
 
-     void register(User user, String siteURL) throws UnsupportedEncodingException;
+
 
      List<User> findUsersByRole(Role role);
 }
