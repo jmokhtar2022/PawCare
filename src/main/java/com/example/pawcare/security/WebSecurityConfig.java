@@ -57,7 +57,8 @@ public class WebSecurityConfig  {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/users/list").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/api/users/**").permitAll()
+                //.access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());

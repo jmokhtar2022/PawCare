@@ -9,15 +9,16 @@ import java.util.List;
 public interface IUserService {
      List<User> retrieveAllUsers();
 
-     User addUser(User user);
+
 
      void deleteUser(Long id);
 
-     User updateUser(User user);
+     User updateUser(Long id, User updatedUser);
 
      User retrieveUser(Long id);
+     List<User> getUsersByRoleName(String roleName);
 
 
 
-     List<User> findUsersByRole(Role role);
+
 }
