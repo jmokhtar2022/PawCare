@@ -1,5 +1,6 @@
 package com.example.pawcare.security;
 
+import com.example.pawcare.entities.Roles;
 import com.example.pawcare.services.user.UserServiceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,14 +55,20 @@ public class WebSecurityConfig  {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+        http//.cors().and().csrf().disable()
+                //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/users/**").permitAll()
-                //.access("hasRole('ROLE_ADMIN')")
-                .anyRequest().authenticated();
+                .antMatchers("/api/users/**")//.permitAll()
+                .access("hasRole('ROLE_ADMIN')")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .httpBasic().and().csrf().disable();
+                //.anyRequest().authenticated();
 
         http.authenticationProvider(authenticationProvider());
+
 
         return http.build();
     }

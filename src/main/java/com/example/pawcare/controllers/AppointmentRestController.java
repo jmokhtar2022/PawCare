@@ -16,7 +16,7 @@ public class AppointmentRestController {
     AppointmentServicesImp appointmentServicesImp;
 
     @PostMapping("/addAppointment")
-    @PreAuthorize("hasRole('vet') or hasRole('admin')")
+    @PreAuthorize("hasRole('ROLE_CLIENT') or hasRole('admin')")
     public Appointment AppendAppointment(@RequestBody Appointment appointment)
     {
         return appointmentServicesImp.AddAppointment(appointment);
