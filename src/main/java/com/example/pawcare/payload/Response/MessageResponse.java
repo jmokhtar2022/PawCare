@@ -1,4 +1,4 @@
-package com.example.pawcare.security.playload.Response;
+package com.example.pawcare.payload.Response;
 
 public class MessageResponse {
     private String message;

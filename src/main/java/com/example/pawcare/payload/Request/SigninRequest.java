@@ -1,4 +1,4 @@
-package com.example.pawcare.security.playload.Request;
+package com.example.pawcare.payload.Request;
 
 import javax.validation.constraints.NotBlank;
 
