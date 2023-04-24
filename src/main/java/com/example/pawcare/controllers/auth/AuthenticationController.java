@@ -4,12 +4,14 @@ package com.example.pawcare.controllers.auth;
 import com.example.pawcare.entities.Role;
 import com.example.pawcare.entities.Roles;
 import com.example.pawcare.entities.User;
+import com.example.pawcare.payload.Response.JwtResponse;
 import com.example.pawcare.repositories.auth.IRoleRepository;
 import com.example.pawcare.repositories.auth.IUserRepository;
 import com.example.pawcare.payload.Request.SigninRequest;
 import com.example.pawcare.payload.Request.SignupRequest;
 
 import com.example.pawcare.payload.Response.MessageResponse;
+import com.example.pawcare.security.jwt.JwtService;
 import com.example.pawcare.services.user.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,6 +49,8 @@ public class AuthenticationController {
     PasswordEncoder passwordEncoder;
 
 
+    @Autowired
+    JwtService jwtService;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -59,13 +63,14 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(signinRequest.getUsername(), signinRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtService.generateJwtToken(authentication);
 
         UserDetailsImpl userDetails =(UserDetailsImpl) authentication.getPrincipal();
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(userDetails);
+        return ResponseEntity.ok(new JwtResponse(jwt, userDetails));
     }
 
     @PostMapping("/signup")

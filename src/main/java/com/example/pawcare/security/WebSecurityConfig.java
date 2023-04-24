@@ -1,6 +1,8 @@
 package com.example.pawcare.security;
 
 import com.example.pawcare.entities.Roles;
+import com.example.pawcare.security.jwt.JwtAuthenticationFilter;
+import com.example.pawcare.security.jwt.JwtEntryPoint;
 import com.example.pawcare.services.user.UserServiceImp;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +32,14 @@ public class WebSecurityConfig  {
 
     @Autowired
     UserServiceImp userServiceImp;
+
+    @Autowired
+    private JwtEntryPoint unauthorizedHandler;
+
+    @Bean
+    public JwtAuthenticationFilter authenticationJwtTokenFilter() {
+        return new JwtAuthenticationFilter();
+    }
 
 
     @Bean
@@ -54,7 +65,24 @@ public class WebSecurityConfig  {
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+          http.cors()
+                  .and()
+                  .csrf()
+                  .disable()
+              .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+              .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+              .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+              //.antMatchers("/api/users/**").permitAll()
+             .anyRequest().authenticated();
+
+         http.authenticationProvider(authenticationProvider());
+
+          http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+
+         return http.build();
+       }
+    /** public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http//.cors().and().csrf().disable()
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
@@ -71,5 +99,5 @@ public class WebSecurityConfig  {
 
 
         return http.build();
-    }
+    }**/
 }
