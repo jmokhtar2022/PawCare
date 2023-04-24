@@ -8,9 +8,7 @@ import java.io.IOException;
 
 @Service
 public class FileUploadServices {
-    public void uploadfile(MultipartFile file) throws IllegalStateException, IOException {
-        file.transferTo(new File("C:\\pawcareupload\\"+file.getOriginalFilename()));
-    }
+ 
     public String uploadfile1(MultipartFile file) throws IllegalStateException, IOException {
         String imageUrl = "http://localhost:8080/pawcareupload/" + file.getOriginalFilename();
         file.transferTo(new File("C:\\pawcareupload\\" + file.getOriginalFilename()));

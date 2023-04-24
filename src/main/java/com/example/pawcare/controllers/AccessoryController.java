@@ -89,24 +89,6 @@ public class AccessoryController {
     public void ExportAccessoriesToCsv(HttpServletResponse servletResponse) throws java.io.IOException {
         accessoryServices.ExportAccessoriesToCsv(servletResponse);
     }
-
-
-    @PostMapping("/addAccessoryUpload")
-    @ResponseBody
-    public Accessory addAccessoryUpload(@RequestParam("name") String name,
-                                        @RequestParam("price") Float price,
-                                        @RequestParam("description") String description
-            , @RequestParam("image") MultipartFile image)
-            throws IllegalStateException, IOException,java.io.IOException, ParseException {
-        Accessory accessory = new Accessory();
-        accessory.setName(name);
-        accessory.setPrice(price);
-        accessory.setDescription(description);
-        fileUploadServices.uploadfile(image);
-        accessory.setImage(image.getOriginalFilename());
-        return accessoryServices.addAccessory(accessory);
-
-    }
     @PostMapping("/addAccessoryUpload1")
     @ResponseBody
     public Map<String, Object> addAccessoryUpload1(@RequestParam("name") String name,
