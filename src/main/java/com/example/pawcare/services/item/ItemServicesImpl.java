@@ -1,9 +1,10 @@
 package com.example.pawcare.services.item;
-
 import com.example.pawcare.entities.Accessory;
+import com.example.pawcare.entities.Cart;
 import com.example.pawcare.entities.Item;
-import com.example.pawcare.repositories.IAccessoryRepository;
+import com.example.pawcare.entities.OrderStatus;
 import com.example.pawcare.repositories.IItemRepository;
+import com.example.pawcare.services.cart.CartServices;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -16,13 +17,18 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import javax.transaction.Transactional;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 @Service
 
 public class ItemServicesImpl implements IItemServices {
@@ -30,6 +36,8 @@ public class ItemServicesImpl implements IItemServices {
 
     @Autowired
     IItemRepository iItemRepository;
+    @Autowired
+    CartServices cartServices;
 
     @Override
     public List<Item> retrieveAllItems() {
@@ -54,10 +62,7 @@ public class ItemServicesImpl implements IItemServices {
         return iItemRepository.findById(idItem).get();
     }
 
-    @Override
-    public void deleteItem(Long idItem) {
-        iItemRepository.deleteById(idItem);
-    }
+
 
     @Override
     public byte[] generateBillPdf(Item item) throws IOException {
@@ -113,5 +118,40 @@ public class ItemServicesImpl implements IItemServices {
 
         return outputStream.toByteArray();
     }
+    @Override
+    public ResponseEntity<Item> createOrder(Item order, Long idCart) {
+        Cart cart = cartServices.GetCartById(idCart);
+        order.setCart(cart);
+        // set default values
+        order.setDate(LocalDate.now());
+        order.setDeliveryPrice(7.0f);
+        order.setTrackingCode("code123");
+        order.setOrderstatus(OrderStatus.Delivered);
+        order.setTotalItem(order.getCart().getTotalCart() + order.getDeliveryPrice());
+
+        // set the accessories of the order to the same as the cart
+        Item savedItem = addItem(order);
+        // update cart to include the item
+        cart.setItem(savedItem);
+        cartServices.updateCart(cart, idCart);
+
+        return ResponseEntity.ok(savedItem);
+    }
+
+
+    @Transactional
+    @Override
+    public void deleteItem(long idItem) {
+        Optional<Item> optionalItem = iItemRepository.findById(idItem);
+
+            Item order = optionalItem.get();
+            Cart cart = order.getCart();
+            if (cart != null) {
+                cart.setItem(null);
+            }
+            iItemRepository.delete(order);
+        }
+
+
 
 }

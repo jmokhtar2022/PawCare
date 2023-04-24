@@ -1,34 +1,29 @@
 package com.example.pawcare.controllers;
-
 import com.example.pawcare.entities.Accessory;
 import com.example.pawcare.services.accessory.AccessoryServices;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.pawcare.services.fileUpload.FileUploadServices;
+import com.itextpdf.io.exceptions.IOException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Base64;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+import java.net.MalformedURLException;
+import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Slf4j
 @RestController
 @CrossOrigin("*")
@@ -39,10 +34,22 @@ public class AccessoryController {
 
     @Autowired
     AccessoryServices accessoryServices;
-
+    @Autowired
+    FileUploadServices fileUploadServices;
+    /*  @GetMapping("/listaccessories")
+      public List<Accessory> listaccessories() {
+          return accessoryServices.retrieveAllAccessories();
+      }*/
     @GetMapping("/listaccessories")
-    public List<Accessory> listaccessories() {
-        return accessoryServices.retrieveAllAccessories();
+    public ResponseEntity<Page<Accessory>> getAccessoriesPage(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "name") String sortField,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+        // Retrieve the paginated and sorted list of accessories
+        Page<Accessory> accessoryPage = accessoryServices.findAll(page, size, sortField, sortDir);
+        // Return the list of accessories with HTTP status 200 OK
+        return ResponseEntity.ok().body(accessoryPage);
     }
 
     @PostMapping("/addAccessory")
@@ -54,9 +61,10 @@ public class AccessoryController {
     @PutMapping(value = "/updateAccessory/{idAccessory}")
 
     public Accessory updateAccessory(@PathVariable Long idAccessory, @RequestBody Accessory accessory) {
-        return accessoryServices.updateAccessory( idAccessory,accessory);
+        return accessoryServices.updateAccessory(idAccessory, accessory);
 
     }
+
     @DeleteMapping("/deleteAccessory/{idAccessory}")
 
     public void deleteAccessory(@PathVariable("idAccessory") Long idAccessory) {
@@ -69,6 +77,57 @@ public class AccessoryController {
     }
 
 
+    @GetMapping("/searchAccessories")
+    public ResponseEntity<List<Accessory>> searchAccessories(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Float price) {
+        List<Accessory> accessories = accessoryServices.searchAccessories(name, price);
+        return new ResponseEntity<>(accessories, HttpStatus.OK);
+    }
+
+    @GetMapping( "/AccessoriesToCsv")
+    public void ExportAccessoriesToCsv(HttpServletResponse servletResponse) throws java.io.IOException {
+        accessoryServices.ExportAccessoriesToCsv(servletResponse);
+    }
+
+
+    @PostMapping("/addAccessoryUpload")
+    @ResponseBody
+    public Accessory addAccessoryUpload(@RequestParam("name") String name,
+                                        @RequestParam("price") Float price,
+                                        @RequestParam("description") String description
+            , @RequestParam("image") MultipartFile image)
+            throws IllegalStateException, IOException,java.io.IOException, ParseException {
+        Accessory accessory = new Accessory();
+        accessory.setName(name);
+        accessory.setPrice(price);
+        accessory.setDescription(description);
+        fileUploadServices.uploadfile(image);
+        accessory.setImage(image.getOriginalFilename());
+        return accessoryServices.addAccessory(accessory);
+
+    }
+    @PostMapping("/addAccessoryUpload1")
+    @ResponseBody
+    public Map<String, Object> addAccessoryUpload1(@RequestParam("name") String name,
+                                                   @RequestParam("price") Float price,
+                                                   @RequestParam("description") String description,
+                                                   @RequestParam("image") MultipartFile image)
+            throws IllegalStateException, IOException,java.io.IOException, ParseException {
+        Accessory accessory = new Accessory();
+        accessory.setName(name);
+        accessory.setPrice(price);
+        accessory.setDescription(description);
+        String imageUrl = fileUploadServices.uploadfile1(image);
+        accessory.setImage(image.getOriginalFilename());
+
+        accessoryServices.addAccessory(accessory);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("imageUrl", imageUrl);
+        response.put("accessory", accessory);
+        return response;
+    }
+
+
 }
-
-

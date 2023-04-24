@@ -1,11 +1,11 @@
 package com.example.pawcare.controllers;
 
-import com.example.pawcare.entities.Accessory;
+import com.example.pawcare.services.email.MailService;
 import com.example.pawcare.entities.Item;
+import com.example.pawcare.services.cart.CartServices;
 import com.example.pawcare.services.item.IItemServices;
-import com.example.pawcare.services.item.ItemServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,12 +14,15 @@ import java.util.List;
 
 @RestController
 @CrossOrigin("*")
-@RequestMapping("/item")
+@RequestMapping("/order")
 
 public class ItemController {
     @Autowired
     IItemServices iItemServices;
-
+    @Autowired
+    private MailService emailService;
+    @Autowired
+    private CartServices cartServices;
     @GetMapping("/itemslist")
     public List<Item> retrieveAllItems()
     {
@@ -32,20 +35,20 @@ public class ItemController {
         return iItemServices.addItem(item);
 
     }
-    @PutMapping(value = "/updateitem/{idItem}")
+    @PutMapping(value = "/updateOrder/{idItem}")
 
     public Item updateItem(@PathVariable Long idItem, @RequestBody Item item) {
         return iItemServices.updateItem(item,idItem);
 
     }
 
-    @DeleteMapping("/delete/{idItem}")
+    @DeleteMapping("/deleteOrder/{idItem}")
 
     public void deleteItem(@PathVariable("idItem") Long idItem) {
         iItemServices.deleteItem(idItem);
     }
 
-    @GetMapping("/getitembyid/{idItem}")
+    @GetMapping("/GetOrderById/{idItem}")
     public Item retrieveItemById(@PathVariable("idItem") Long idItem) {
         return iItemServices.retrieveItemById(idItem);
     }
@@ -62,6 +65,10 @@ public class ItemController {
         response.getOutputStream().flush();
     }
 
+    @PostMapping("/createOrder/{idCart}")
+    public ResponseEntity<Item> createOrder(@RequestBody Item order, @PathVariable("idCart") Long idCart) {
+     return iItemServices.createOrder(order,idCart);
+    }
 
 
-}
+    }

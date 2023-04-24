@@ -13,19 +13,24 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -49,8 +54,8 @@ public class AccessoryServicesImpl implements AccessoryServices {
     }
 
     @Override
-    public Accessory updateAccessory( Long idAccessory,Accessory accessory ) {
-     //   return iAccessoryRepository.save(accessory);
+    public Accessory updateAccessory(Long idAccessory, Accessory accessory) {
+        //   return iAccessoryRepository.save(accessory);
         Accessory updatedAccessory = iAccessoryRepository.findById(idAccessory).get();
         updatedAccessory.setName(accessory.getName());
         updatedAccessory.setPrice(accessory.getPrice());
@@ -101,7 +106,7 @@ public class AccessoryServicesImpl implements AccessoryServices {
         doc.add(title);
 
         // Add item details
-        Table table = new Table(new UnitValue[] { UnitValue.createPercentValue(40), UnitValue.createPercentValue(60) });
+        Table table = new Table(new UnitValue[]{UnitValue.createPercentValue(40), UnitValue.createPercentValue(60)});
         table.setWidth(UnitValue.createPercentValue(80))
                 .setTextAlignment(TextAlignment.LEFT)
                 .setMarginTop(20)
@@ -124,5 +129,60 @@ public class AccessoryServicesImpl implements AccessoryServices {
 
         return outputStream.toByteArray();
     }
+
+    @Override
+    public Page<Accessory> findAll(int page, int size, String sortField, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
+                Sort.by(sortField).descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
+        return iAccessoryRepository.findAll(pageable);
+    }
+
+    @Override
+    public List<Accessory> searchAccessories(String name, Float price) {
+        if (name == null && price == null) {
+            // If no criteria is provided, return all accessories
+            return iAccessoryRepository.findAll();
+        } else if (name != null && price == null) {
+            // If only name criteria is provided, search by name
+            return iAccessoryRepository.findByNameContainingIgnoreCase(name);
+        } else if (name == null && price != null) {
+            // If only price criteria is provided, search by price
+            return iAccessoryRepository.findByPrice(price);
+        } else {
+            // If both name and price criteria are provided, search by both
+            return iAccessoryRepository.findByNameContainingIgnoreCaseAndPrice(name, price);
+        }
+    }
+@Override
+    public void ExportAccessoriesToCsv(HttpServletResponse servletResponse) throws IOException {
+        List<Accessory> accessories = iAccessoryRepository.findAll();
+
+        String filename = "accessories.csv";
+        String csvContent = ConvertAccessoriesToCsv(accessories);
+
+        servletResponse.setContentType("text/csv");
+      servletResponse.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + filename);
+
+    servletResponse.getOutputStream().print(csvContent);
+    }
+@Override
+public String ConvertAccessoriesToCsv(List<Accessory> accessories) throws IOException {
+    StringWriter writer = new StringWriter();
+    CSVFormat format = CSVFormat.DEFAULT
+            .withHeader("Name", "Price", "Description")
+            .withDelimiter(';');
+    try (CSVPrinter csvPrinter = new CSVPrinter(writer, format)) {
+        for (Accessory accessory : accessories) {
+            csvPrinter.printRecord(accessory.getName(), accessory.getPrice(), accessory.getDescription());
+        }
+    } catch (IOException e) {
+        log.error("Error while writing CSV", e);
+    }
+
+    return writer.toString();
+}
+
+
 
 }

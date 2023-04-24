@@ -14,9 +14,11 @@ import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import lombok.Setter;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
@@ -35,9 +37,10 @@ public interface IItemServices {
 
     public Item retrieveItemById(Long idItem);
 
-    public void deleteItem(Long idItem);
 
     public byte[] generateBillPdf(Item item) throws IOException ;
+    public ResponseEntity<Item> createOrder(@RequestBody Item item, @RequestParam("idCart") Long idCart) ;
+    public void deleteItem(long idItem) ;
 
 
     }
