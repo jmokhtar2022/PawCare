@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,9 @@ public class CommentAdoptionServiceImpl implements ICommentAdoptionServices {
     @Autowired
     private IAdoptionRepository adoptionRepository;
 
+    private CommentFilter commentFilter;
+
+
     private CommentAdoptionServiceImpl(){}
 
     @Override
@@ -30,15 +34,12 @@ public class CommentAdoptionServiceImpl implements ICommentAdoptionServices {
     public CommentAdoption addCommentToAdoption(Long idAdoption, CommentAdoption comment) {
         Adoption adoption = adoptionRepository.findById(idAdoption)
                 .orElseThrow(() -> new RuntimeException("Adoption not found with id " + idAdoption));
-
         String commentText = comment.getText().trim();
         if (commentText.isEmpty()) {
             throw new IllegalArgumentException("Comment text cannot be empty");
         }
         comment.setCDate(new Date());
         comment.setAdoption(adoption);
-
-
         return commentAdoptionRepository.save(comment);
     }
 
@@ -46,7 +47,16 @@ public class CommentAdoptionServiceImpl implements ICommentAdoptionServices {
 
     @Override
     public List<CommentAdoption> getCommentsForAdoption(Long idAdoption) {
-        return commentAdoptionRepository.findByAdoptionIdAdoption(idAdoption);
+        List<CommentAdoption> comments = commentAdoptionRepository.findByAdoptionIdAdoption(idAdoption);
+        List<CommentAdoption> filteredComments = new ArrayList<>();
+        for (CommentAdoption comment : comments) {
+            if (!comment.getText().contains("***")) {
+                filteredComments.add(comment);
+            }
+        }
+
+        return filteredComments;
     }
+
 
 }

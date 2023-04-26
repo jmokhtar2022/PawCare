@@ -1,8 +1,7 @@
 package com.example.pawcare.controllers;
 
 import com.example.pawcare.entities.CommentAdoption;
-import com.example.pawcare.services.CommentAdoption.BadWordsFilter;
-import com.example.pawcare.services.CommentAdoption.CommentAdoptionServiceImpl;
+import com.example.pawcare.services.CommentAdoption.FilterComments;
 import com.example.pawcare.services.CommentAdoption.ICommentAdoptionServices;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -25,10 +23,9 @@ public class CommentAdoptionController {
     private ICommentAdoptionServices commentAdoptionServices;
 
     @PostMapping("/{idAdoption}")
-
+    @FilterComments
     public ResponseEntity<CommentAdoption> addCommentToAdoption(
-            @PathVariable(value = "idAdoption") Long idAdoption,
-            @RequestBody @Valid CommentAdoption comment) {
+            @PathVariable(value = "idAdoption") Long idAdoption, @RequestBody @Valid CommentAdoption comment) {
         try {
             CommentAdoption savedComment = commentAdoptionServices.addCommentToAdoption(idAdoption, comment);
             return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
