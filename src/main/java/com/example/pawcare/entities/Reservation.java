@@ -1,5 +1,7 @@
 package com.example.pawcare.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,19 +15,26 @@ import java.util.Date;
 public class Reservation implements Serializable {
 
     @ManyToOne
+    @JsonIgnore
     private Hotel hotel;
 
     @ManyToOne
+    @JsonIgnore
     private Pet pet;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReservation;
-    @Temporal(TemporalType.DATE)
+   // @Temporal(TemporalType.DATE)
+   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+   @Column(columnDefinition="DATETIME")
     private Date checkin;
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @Column( columnDefinition="DATETIME")
     private Date checkout;
     private Status status;
+    private byte[] QRCode;
     private String specialrequests;
 
 }

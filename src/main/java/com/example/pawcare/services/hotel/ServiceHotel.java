@@ -47,14 +47,7 @@ public class ServiceHotel implements Ihotel {
         hotelRepository.deleteById(hotelId);
     }
 
-    /*public String upload(@RequestParam("file") MultipartFile file) throws Exception{
-        String image=file.getOriginalFilename();
-        String path="C:\\xampp\\htdocs\\img";
-        byte[] bytes = image.getBytes();
-        int image2=bytes.toString().hashCode();
-        Files.copy(file.getInputStream(), Paths.get(path+ File.separator+image2+".jpg"));
-        return "mchett aaa";
-    }*/
+
     public ResponseEntity<ResponseMessage> uploadFile(MultipartFile file, long hotelId)
     {
 

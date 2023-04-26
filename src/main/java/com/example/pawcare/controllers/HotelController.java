@@ -1,9 +1,11 @@
 package com.example.pawcare.controllers;
 
 import com.example.pawcare.entities.Hotel;
+import com.example.pawcare.entities.Rating;
 import com.example.pawcare.services.hotel.Ihotel;
 import com.example.pawcare.services.hotel.ResponseMessage;
 import com.example.pawcare.services.hotel.ServiceHotel;
+import com.example.pawcare.services.rating.ServiceRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +22,9 @@ public class HotelController {
     @Autowired
     ServiceHotel serviceHotel;
 
+    @Autowired
+    ServiceRating serviceRating;
+
     @PostMapping("/addHotel")
     public Hotel addHotel(@RequestBody Hotel hotel )
     {
@@ -35,10 +40,12 @@ public class HotelController {
     @GetMapping("/findHotel/{id}")
     public Hotel retrieveHotel(@PathVariable("id") Long hotelId)
     {
+        Long r=serviceRating.countratingsByhotel(hotelId);
         return ihotel.retrieveHotel(hotelId);
     }
 
     @GetMapping("/all")
+    @CrossOrigin(origins = "http://localhost:4200")
     public List<Hotel> findAllHotels()
     {
         return ihotel.RetriveALLHotels();
@@ -50,13 +57,16 @@ public class HotelController {
         ihotel.removeHotel(hotelId);
     }
 
-   /* @PostMapping("/file")
-    public String upload(@RequestParam("file") MultipartFile file) throws Exception{
-        return serviceHotel.upload(file);
-    }*/
+
 
     @PostMapping("/upload/{idord}")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("idord" )long hotelId) {
         return    serviceHotel.uploadFile(file,hotelId);
+    }
+
+    @GetMapping("/countratings/{id}")
+    public Long Countratings(@PathVariable("id") Long hotelId)
+    {
+        return serviceRating.countratingsByhotel(hotelId);
     }
 }
