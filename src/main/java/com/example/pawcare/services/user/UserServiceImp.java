@@ -4,6 +4,7 @@ package com.example.pawcare.services.user;
 import com.example.pawcare.entities.Role;
 import com.example.pawcare.entities.Roles;
 import com.example.pawcare.entities.User;
+import com.example.pawcare.repositories.auth.IRoleRepository;
 import com.example.pawcare.repositories.auth.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,10 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
+import java.util.*;
 
 
 @Service
@@ -24,6 +23,9 @@ import java.util.Set;
 public class UserServiceImp implements UserDetailsService , IUserService{
     @Autowired
     IUserRepository iUserRepository;
+
+    @Autowired
+    private IRoleRepository roleRepository;
 
 
 
@@ -61,6 +63,7 @@ public class UserServiceImp implements UserDetailsService , IUserService{
             User user = optionalUser.get();
             user.setUsername(updatedUser.getUsername());
             user.setEmail(updatedUser.getEmail());
+
             return iUserRepository.save(user);
         }
         throw new RuntimeException("User not found with id " + id);
@@ -88,5 +91,28 @@ public class UserServiceImp implements UserDetailsService , IUserService{
         return result;
     }
 
+    @Override
+    public User updateUserRoles(Long userId, List<String> roleNames) {
+        Optional<User> optionalUser = iUserRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            Set<Role> roles = new HashSet<>();
+            for (String roleName : roleNames) {
+                Optional<Role> optionalRole = roleRepository.findByName(Roles.valueOf(roleName));
+                if (optionalRole.isPresent()) {
+                    roles.add(optionalRole.get());
+                } else {
+                    throw new RuntimeException("Role not found: " + roleName);
+                }
+            }
+            user.setRoles(roles);
+            iUserRepository.save(user);
+            return user;
+        }
+        return null;
+    }
 
-}
+    }
+
+
+

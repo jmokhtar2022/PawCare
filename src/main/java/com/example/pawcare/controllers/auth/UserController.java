@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -57,5 +58,15 @@ public class UserController {
     public void deleteUser(Long id){
         iUserRepository.deleteById(id);
     }
+
+    @PutMapping("/update/{id}/roles")
+    public ResponseEntity<User> updateUserRoles(@PathVariable(value = "id") Long userId, @RequestBody List<String> roleNames) {
+        User updatedUser = userServiceImp.updateUserRoles(userId, roleNames);
+        if (updatedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedUser);
+    }
+
 
 }

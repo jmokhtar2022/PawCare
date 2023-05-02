@@ -5,6 +5,7 @@ import com.example.pawcare.entities.User;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Set;
 
 public interface IUserService {
      List<User> retrieveAllUsers();
@@ -17,6 +18,7 @@ public interface IUserService {
 
      User retrieveUser(Long id);
      List<User> getUsersByRoleName(String roleName);
+      User updateUserRoles(Long userId, List<String> roleNames);
 
 
 

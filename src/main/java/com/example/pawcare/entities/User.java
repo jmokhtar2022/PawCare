@@ -1,6 +1,7 @@
 package com.example.pawcare.entities;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,13 +22,15 @@ import javax.validation.constraints.Size;
         })
 @Getter
 @Setter
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //private String firstName;
-    //private String lastName;
+    private String firstName;
+    private String lastName;
+
     @NotBlank
     @Size(max = 20)
     private String username;
@@ -37,12 +40,14 @@ public class User {
     @Email
     private String email;
 
+
+
     @NotBlank
     @Size(max = 120)
     private String password;
 
-    //private int phoneNumber;
-    //private String image;
+
+    private int phone;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(  name = "user_roles",
@@ -66,10 +71,22 @@ public class User {
     public User() {
     }
 
+
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public User(String firstname, String lastname, String username, String email, String password, int phone) {
+        this.firstName = firstname;
+        this.lastName= lastname;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phone= phone;
+
     }
 
     public Long getId() {
@@ -104,11 +121,36 @@ public class User {
         this.password = password;
     }
 
+
     public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public int getPhone() {
+        return phone;
+    }
+
+    public void setPhone(int phone) {
+        this.phone = phone;
     }
 }
