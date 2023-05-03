@@ -34,9 +34,9 @@ public class Hotel implements Serializable {
     private String address;
 
     private int numtel;
-    @Lob
-    @Column(name = "data", columnDefinition = "LONGBLOB")
-    private byte[] data;
+
+    @Column(name = "data")
+    private String data;
     @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy = "hotel")
     @JsonIgnore
     private List<Rating> ratings;

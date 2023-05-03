@@ -8,13 +8,20 @@ import com.example.pawcare.services.hotel.ServiceHotel;
 import com.example.pawcare.services.rating.ServiceRating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import com.google.gson.Gson;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
 @RequestMapping("/hotel")
+@CrossOrigin(origins = "http://localhost:4200")
 public class HotelController {
     @Autowired
     Ihotel ihotel;
@@ -26,26 +33,40 @@ public class HotelController {
     ServiceRating serviceRating;
 
     @PostMapping("/addHotel")
-    public Hotel addHotel(@RequestBody Hotel hotel )
+
+    public Hotel addHotel(@RequestParam("hotel") String hotel,@RequestParam("image") MultipartFile image)
     {
-        return ihotel.addHotel(hotel);
+        Hotel htl = new Gson().fromJson(hotel, Hotel.class);
+        String imgName = StringUtils.cleanPath(image.getOriginalFilename());
+        byte[] bytes = imgName.getBytes();
+        int image2=bytes.toString().hashCode();
+        String imageName = ""+ image2;
+        String path="C:/xampp/htdocs/img";
+        try {
+            Files.copy(image.getInputStream(), Paths.get(path + File.separator + image2 + ".jpg"));
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        htl.setData(imageName);
+
+        return ihotel.addHotel(htl);
     }
 
-    @PostMapping("/updateHotel")
-    public Hotel updateHotel(@RequestBody Hotel hotel)
+    @PostMapping("/updateHotel/{id}")
+    public Hotel updateHotel(@RequestBody Hotel hotel, @PathVariable("id") Long hotelid)
     {
-        return ihotel.updateHotel(hotel);
+        return ihotel.updateHotel(hotel,hotelid);
     }
 
     @GetMapping("/findHotel/{id}")
     public Hotel retrieveHotel(@PathVariable("id") Long hotelId)
     {
-        Long r=serviceRating.countratingsByhotel(hotelId);
+        //Long r=serviceRating.countratingsByhotel(hotelId);
         return ihotel.retrieveHotel(hotelId);
     }
 
     @GetMapping("/all")
-    @CrossOrigin(origins = "http://localhost:4200")
+
     public List<Hotel> findAllHotels()
     {
         return ihotel.RetriveALLHotels();
@@ -59,10 +80,10 @@ public class HotelController {
 
 
 
-    @PostMapping("/upload/{idord}")
+   /* @PostMapping("/upload/{idord}")
     public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable("idord" )long hotelId) {
         return    serviceHotel.uploadFile(file,hotelId);
-    }
+    }*/
 
     @GetMapping("/countratings/{id}")
     public Long Countratings(@PathVariable("id") Long hotelId)

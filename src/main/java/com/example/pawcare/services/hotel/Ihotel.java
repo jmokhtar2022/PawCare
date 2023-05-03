@@ -1,6 +1,7 @@
 package com.example.pawcare.services.hotel;
 
 import com.example.pawcare.entities.Hotel;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ public interface Ihotel {
 
     Hotel addHotel(Hotel hotel);
 
-    Hotel updateHotel(Hotel hotel);
+    Hotel updateHotel(Hotel hotel,Long hotelid);
 
     Hotel retrieveHotel(Long hotelId);
 
