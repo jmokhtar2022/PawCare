@@ -36,10 +36,10 @@ public class AccessoryController {
     AccessoryServices accessoryServices;
     @Autowired
     FileUploadServices fileUploadServices;
-    /*  @GetMapping("/listaccessories")
+      @GetMapping("/accessories")
       public List<Accessory> listaccessories() {
           return accessoryServices.retrieveAllAccessories();
-      }*/
+      }
     @GetMapping("/listaccessories")
     public ResponseEntity<Page<Accessory>> getAccessoriesPage(
             @RequestParam(defaultValue = "1") int page,
@@ -58,12 +58,42 @@ public class AccessoryController {
 
     }
 
-    @PutMapping(value = "/updateAccessory/{idAccessory}")
+   /* @PutMapping(value = "/updateAccessory/{idAccessory}")
 
     public Accessory updateAccessory(@PathVariable Long idAccessory, @RequestBody Accessory accessory) {
         return accessoryServices.updateAccessory(idAccessory, accessory);
 
-    }
+    }*/
+   @PutMapping("/updateAccessory/{idAccessory}")
+   @ResponseBody
+   public Map<String, Object> updateAccessory(@PathVariable("idAccessory") Long idAccessory,
+                                              @RequestParam("name") String name,
+                                              @RequestParam("price") Float price,
+                                              @RequestParam("description") String description,
+                                              @RequestParam(value = "image") MultipartFile image)
+           throws IllegalStateException, IOException,java.io.IOException, ParseException {
+       Accessory accessory = accessoryServices.retrieveAccessoryById(idAccessory);
+       if (accessory == null) {
+           throw new IllegalArgumentException("Invalid accessory ID: " + idAccessory);
+       }
+
+       accessory.setName(name);
+       accessory.setPrice(price);
+       accessory.setDescription(description);
+
+       if (image != null) {
+           String imageUrl = fileUploadServices.uploadfile1(image);
+           accessory.setImage(image.getOriginalFilename());
+       }
+
+       accessoryServices.updateAccessory(idAccessory,accessory);
+
+       Map<String, Object> response = new HashMap<>();
+       response.put("accessory", accessory);
+       return response;
+   }
+
+
 
     @DeleteMapping("/deleteAccessory/{idAccessory}")
 

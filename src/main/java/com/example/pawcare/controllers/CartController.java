@@ -4,6 +4,8 @@ import com.example.pawcare.services.email.MailService;
 import com.example.pawcare.entities.*;
 import com.example.pawcare.services.cart.CartServices;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +18,15 @@ public class CartController {
     MailService mailService;
 
 
-    @PostMapping("/addCart/{id}") //id for idUser
+
+    @PostMapping("/createCart")
+    public ResponseEntity<Cart> createCart() {
+        Cart cart = cartServices.createCart();
+        return new ResponseEntity<>(cart, HttpStatus.CREATED);
+    }
+
+
+  /*  @PostMapping("/addCart/{id}") //id for idUser
     public Cart addCart(@RequestBody Cart cart, @PathVariable("id") Long id) {
         return cartServices.assignCart(cart, id);
 
@@ -26,7 +36,7 @@ public class CartController {
     public Cart displayCartByUserId(@PathVariable("id") Long id) //id for idUser
     {
         return cartServices.displayCartByUserId(id);
-    }
+    }*/
 
     @GetMapping("/getCartById/{idCart}")
     public Cart GetCartById(@PathVariable("idCart") Long idCart) {
@@ -43,22 +53,26 @@ public class CartController {
         return cartServices.removeAccessoryFromCart(idAccessory, idCart);
     }
 
-    @GetMapping("/cart/{cartId}/totalPrice")
-    public float getTotalCartPrice(@PathVariable Long cartId) {
-        return cartServices.getTotalCartPrice(cartId);
+    @GetMapping("/cart/{idCart}/totalPrice")
+    public float getTotalCartPrice(@PathVariable Long idCart) {
+        return cartServices.getTotalCartPrice(idCart);
     }
 
-    @DeleteMapping("/{cartId}/emptyCart")
-    public void emptyCart(@PathVariable Long cartId) {
-        cartServices.emptyCart(cartId);
+    @DeleteMapping("/{idCart}/emptyCart")
+    public void emptyCart(@PathVariable Long idCart) {
+        cartServices.emptyCart(idCart);
     }
 
-    @GetMapping("/{cartId}")
-    public float calculateTotalCartPrice(@PathVariable Long cartId) {
+    @GetMapping("/{idCart}")
+    public float calculateTotalCartPrice(@PathVariable Long idCart) {
 
-        return cartServices.calculateTotalCartPrice(cartId);
+        return cartServices.calculateTotalCartPrice(idCart);
     }
+    @DeleteMapping("/deleteCart/{idCart}")
 
+    public void deleteCart(@PathVariable("idCart") Long idCart) {
+        cartServices.deleteCart(idCart);
+    }
 
 
 }

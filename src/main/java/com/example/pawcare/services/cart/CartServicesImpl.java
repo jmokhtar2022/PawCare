@@ -31,13 +31,13 @@ public class CartServicesImpl implements CartServices {
     @Autowired
     MailService mailService;
 
-    @Override
+    /*@Override
     public Cart assignCart(Cart cart, Long userId) {
         User user = iUserRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
         cart.setUser(user); // associer le panier à l'utilisateur
         return iCartRepository.save(cart); }
-
+*/
     @Override
     public Cart addCart(Cart cart){
         return  iCartRepository.save(cart);
@@ -48,21 +48,35 @@ public class CartServicesImpl implements CartServices {
         return iCartRepository.findById(idCart).get();
     }
 
+    @Override
     public Cart createCart() {
         Cart cart = new Cart();
-       // cart.setIdCart(1);
-        cart.setTotalCart(0.0f); // initialize the totalCart to zero
+        cart.setTotalCart(0.0f); // initialize
+        cart.setItem(null);
         return iCartRepository.save(cart);
+
     }
+
+    @Override
+    public void deleteCart(Long idCart) {
+        iCartRepository.deleteById(idCart);
+    }
+
     @Override
     public Cart addAccessoryToCart(Long idAccessory,Long idCart)
     {
-        Cart c =iCartRepository.findById(idCart).get();
+        Cart cart =iCartRepository.findById(idCart).get();
         Accessory ac = iAccessoryRepository.findById(idAccessory).get();
-        List<Accessory> accesories  = c.getAccessories();
+        List<Accessory> accesories  = cart.getAccessories();
         accesories.add(ac);
-        c.setAccessories(accesories);
-        return iCartRepository.save(c);
+        cart.setAccessories(accesories);
+        // Update the totalCart value
+        float totalCartPrice = cart.getTotalCart() + ac.getPrice();
+        cart.setTotalCart(totalCartPrice);
+        // Update the totalItem value
+        //float totalItemPrice = cart.getTotalCart() + cart.getItem().getDeliveryPrice();
+        //cart.getItem().setTotalItem(totalItemPrice);
+        return iCartRepository.save(cart);
     }
     @Override
     public Cart updateCart(Cart cart, Long idCart) {
@@ -72,21 +86,28 @@ public class CartServicesImpl implements CartServices {
     @Override
     public Cart removeAccessoryFromCart(Long idAccessory,Long idCart)
     {
-        Cart c =iCartRepository.findById(idCart).get();
+        Cart cart =iCartRepository.findById(idCart).get();
         Accessory ac = iAccessoryRepository.findById(idAccessory).get();
-        List<Accessory> accesories  = c.getAccessories();
+        List<Accessory> accesories  = cart.getAccessories();
         accesories.remove(ac);
-        c.setAccessories(accesories);
-        return iCartRepository.save(c);
+        cart.setAccessories(accesories);
+        // Update the totalCart value
+        float totalCartPrice = cart.getTotalCart() - ac.getPrice();
+        cart.setTotalCart(totalCartPrice);
+        // Update the totalItem value
+        //float totalItemPrice = cart.getTotalCart() + cart.getItem().getDeliveryPrice();
+        //cart.getItem().setTotalItem(totalItemPrice);
+
+        return iCartRepository.save(cart);
     }
     @Override
-    public Cart displayCartByUserId(Long id)
+    public Cart displayCartByCartId(Long idCart)
     {
-        return iCartRepository.getCart(id);
+        return GetCartById(idCart);
     }
-@Override
-public float getTotalCartPrice(Long cartId) {
-    Cart cart = iCartRepository.findById(cartId).orElseThrow(() -> new EntityNotFoundException("Cart not found with id " + cartId));
+    @Override
+    public float getTotalCartPrice(Long idCart) {
+    Cart cart = iCartRepository.findById(idCart).orElseThrow(() -> new EntityNotFoundException("Cart not found with id " + idCart));
     List<Accessory> accessories = cart.getAccessories();
     float totalPrice = 0;
     for (Accessory accessory : accessories) {
@@ -94,16 +115,10 @@ public float getTotalCartPrice(Long cartId) {
     }
     return totalPrice;
 }
-public void emptyCart(Long cartId) {
-    Cart cart = iCartRepository.findById(cartId).orElseThrow(() -> new EntityNotFoundException("Cart not found"));
-    cart.setAccessories(new ArrayList<>());
-    iCartRepository.save(cart);
-}
+    @Override
+    public float calculateTotalCartPrice( Long idCart) {
 
-@Override
-    public float calculateTotalCartPrice( Long cartId) {
-
-        Cart cart = iCartRepository.findById(cartId).orElseThrow(() -> new RuntimeException("Cart not found"));
+        Cart cart = iCartRepository.findById(idCart).orElseThrow(() -> new RuntimeException("Cart not found"));
 
         float totalCartPrice = 0;
         for (Accessory accessory : cart.getAccessories()) {
@@ -111,9 +126,18 @@ public void emptyCart(Long cartId) {
         }
         cart.setTotalCart(totalCartPrice);
         iCartRepository.save(cart);
-        // Return the calculated total price as a float
         return totalCartPrice;
     }
+    public void emptyCart(Long cartId) {
+        Cart cart = iCartRepository.findById(cartId).orElseThrow(() -> new EntityNotFoundException("Cart not found"));
+        cart.setAccessories(new ArrayList<>());
+        cart.setTotalCart(0.0f); // Set totalCart to 0
+        cart.getItem().setTotalItem(0.0f); // Set totalItem to 0
+        iCartRepository.save(cart);
+    }
+
+
+
     @Override
     public ResponseEntity<String> confirmOrder(@RequestBody Item order) {
         float totalPrice = calculateTotalCartPrice(order.getCart().getIdCart());

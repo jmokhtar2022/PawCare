@@ -14,6 +14,7 @@ public interface IAccessoryRepository extends JpaRepository<Accessory,Long> {
     List<Accessory> findByNameContainingIgnoreCase(String name);
     List<Accessory> findByPrice(Float price);
     List<Accessory> findByNameContainingIgnoreCaseAndPrice(String name, float price);
+
 }
 
 

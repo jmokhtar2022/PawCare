@@ -1,6 +1,8 @@
 package com.example.pawcare.services.accessory;
 import com.example.pawcare.entities.Accessory;
+import com.example.pawcare.entities.Item;
 import com.example.pawcare.repositories.IAccessoryRepository;
+import com.example.pawcare.services.fileUpload.FileUploadServices;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
@@ -22,15 +24,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -39,6 +38,8 @@ import java.util.List;
 public class AccessoryServicesImpl implements AccessoryServices {
     @Autowired
     IAccessoryRepository iAccessoryRepository;
+    @Autowired
+    FileUploadServices fileUploadServices;
 
     @Override
     public List<Accessory> retrieveAllAccessories() {
@@ -55,7 +56,6 @@ public class AccessoryServicesImpl implements AccessoryServices {
 
     @Override
     public Accessory updateAccessory(Long idAccessory, Accessory accessory) {
-        //   return iAccessoryRepository.save(accessory);
         Accessory updatedAccessory = iAccessoryRepository.findById(idAccessory).get();
         updatedAccessory.setName(accessory.getName());
         updatedAccessory.setPrice(accessory.getPrice());
@@ -64,6 +64,7 @@ public class AccessoryServicesImpl implements AccessoryServices {
         return iAccessoryRepository.save(updatedAccessory);
 
     }
+
 
     @Override
     public Accessory retrieveAccessoryById(Long idAccessory) {
@@ -170,11 +171,12 @@ public class AccessoryServicesImpl implements AccessoryServices {
 public String ConvertAccessoriesToCsv(List<Accessory> accessories) throws IOException {
     StringWriter writer = new StringWriter();
     CSVFormat format = CSVFormat.DEFAULT
-            .withHeader("Name", "Price", "Description")
+            .withHeader("Name", "Price", "Description","Image")
             .withDelimiter(';');
     try (CSVPrinter csvPrinter = new CSVPrinter(writer, format)) {
         for (Accessory accessory : accessories) {
-            csvPrinter.printRecord(accessory.getName(), accessory.getPrice(), accessory.getDescription());
+            csvPrinter.printRecord(accessory.getName(), accessory.getPrice(), accessory.getDescription(), URLEncoder.encode(accessory.getImage(), "UTF-8")
+            );
         }
     } catch (IOException e) {
         log.error("Error while writing CSV", e);

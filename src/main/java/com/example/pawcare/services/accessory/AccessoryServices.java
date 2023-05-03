@@ -2,6 +2,7 @@ package com.example.pawcare.services.accessory;
 
 import com.example.pawcare.entities.Accessory;
 import com.example.pawcare.entities.Item;
+import com.example.pawcare.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -23,8 +24,6 @@ public interface AccessoryServices {
     public List<Accessory> retrieveAllAccessories();
 
     public Accessory addAccessory(Accessory accessory);
-
- //   public Accessory updateAccessory(Accessory accessory, Long idAccessory);
 
     public Accessory updateAccessory( Long idAccessory,Accessory accessory);
     public Accessory retrieveAccessoryById(Long idAccessory);

@@ -16,7 +16,7 @@ public class Item implements Serializable {
 
     @OneToOne
     private Cart cart;
-
+    @JsonIgnore //break the circular reference
     @ManyToOne
     private User user;
 

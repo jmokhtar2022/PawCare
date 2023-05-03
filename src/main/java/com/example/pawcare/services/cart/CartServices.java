@@ -11,17 +11,19 @@ import java.util.List;
 
 public interface CartServices {
 
-    public Cart assignCart(Cart cart, Long userId) ;
+    //public Cart assignCart(Cart cart, Long userId) ;
     public Cart GetCartById(Long idCart);
     public Cart addCart(Cart cart);
+    public Cart createCart() ;
     public Cart addAccessoryToCart(Long idAccessory,Long idCart);
     public Cart removeAccessoryFromCart(Long idAccessory,Long idCart);
-    public Cart displayCartByUserId(Long id);
-    public float getTotalCartPrice(Long cartId) ;
+    public Cart displayCartByCartId(Long idCart);
+    public float getTotalCartPrice(Long idCart) ;
     public void emptyCart( Long cartId) ;
-    public float calculateTotalCartPrice(Long cartId);
+    public float calculateTotalCartPrice(Long idCart);
     public ResponseEntity<String> confirmOrder(@RequestBody Item order) ;
     public Cart updateCart(Cart cart, Long idCart);
+    public void deleteCart(Long idCart) ;
 
 
 }
