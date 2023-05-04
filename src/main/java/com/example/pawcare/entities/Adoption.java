@@ -29,6 +29,7 @@ public class Adoption implements Serializable {
     private String title;
     private String description;
     private int nbDemande;
+
     private int nbLikes;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate cDate;

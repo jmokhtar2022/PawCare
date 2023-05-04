@@ -16,11 +16,9 @@ public class ReportTraining implements Serializable {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private long idReport;
-
-    private String message;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+        private String message;
+        @JsonIgnore
+        @ManyToOne(fetch = FetchType.LAZY)
         private Training training;
 
         // add getter and setter for training field

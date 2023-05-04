@@ -28,5 +28,8 @@ public class EmailController {
         String result = emailService.sendSimpleMail(details);
         return ResponseEntity.ok(result);
     }
+
+
+
 }
 

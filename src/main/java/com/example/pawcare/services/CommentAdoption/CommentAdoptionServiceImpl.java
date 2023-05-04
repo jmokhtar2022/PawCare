@@ -52,8 +52,10 @@ public class CommentAdoptionServiceImpl implements ICommentAdoptionServices {
         for (CommentAdoption comment : comments) {
             if (!comment.getText().contains("***")) {
                 filteredComments.add(comment);
+                commentAdoptionRepository.save(comment);
             }
         }
+
 
         return filteredComments;
     }

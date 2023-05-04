@@ -3,6 +3,7 @@ package com.example.pawcare.services.training;
 import com.example.pawcare.entities.CommentAdoption;
 import com.example.pawcare.entities.ReportTraining;
 import com.example.pawcare.entities.Training;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public interface ITrainingServices {
     public long getCatTrainingCount();
     List<ReportTraining> getReportTrainings();
     public List<ReportTraining> getReportsByTraining(Long idTrainign);
+    public ResponseEntity<String> decreaseAvailablePlaces(Long idTraining);
 
 
 

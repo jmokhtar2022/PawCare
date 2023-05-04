@@ -121,7 +121,10 @@ ITrainingRepository trainingRepository;
 
 
 
-
+    @PutMapping("/{idTraining}/booking")
+    public ResponseEntity<String> decreaseAvailablePlaces(@PathVariable Long idTraining) {
+     return trainingServices.decreaseAvailablePlaces(idTraining);
+    }
 
 
 }

@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IAdoptionRepository extends JpaRepository<Adoption,Long> {
+
+
 }

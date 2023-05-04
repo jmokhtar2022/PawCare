@@ -7,9 +7,14 @@ import com.example.pawcare.entities.Type;
 import com.example.pawcare.repositories.IReportTrainingRepository;
 import com.example.pawcare.repositories.ITrainingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TrainingServicesImpl implements ITrainingServices {
@@ -65,6 +70,27 @@ public class TrainingServicesImpl implements ITrainingServices {
     public long getCatTrainingCount() {
         return trainingRepository.countByType(Type.Cat);
     }
+
+
+
+    public ResponseEntity<String> decreaseAvailablePlaces(Long idTraining) {
+        Optional<Training> optionalTraining = trainingRepository.findById(idTraining);
+        if (optionalTraining.isPresent()) {
+            Training training = optionalTraining.get();
+            int availablePlaces = training.getNbrplaces();
+            if (availablePlaces > 0) {
+                training.setNbrplaces(availablePlaces - 1);
+                trainingRepository.save(training);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.badRequest().body("No available places");
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 
 
 

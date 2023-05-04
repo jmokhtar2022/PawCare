@@ -125,6 +125,11 @@ public class AdoptionController {
 
 
 
+    @PutMapping("/{idAdoption}/like")
+    public ResponseEntity<Integer> like(@PathVariable Long idAdoption) {
+        return adoptionServices.like(idAdoption);
+    }
+
 
 }
 
