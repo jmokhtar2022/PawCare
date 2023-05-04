@@ -10,7 +10,7 @@ public interface Ireservation {
 
     Reservation addreservation(Reservation reservation);
 
-    Reservation updatereservation(Reservation reservation);
+    Reservation updatereservation(Reservation reservation,Long resid);
 
     Reservation retrievereservation(Long idReservation);
 

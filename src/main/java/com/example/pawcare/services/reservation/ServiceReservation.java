@@ -26,7 +26,12 @@ public class ServiceReservation implements Ireservation{
     }
 
     @Override
-    public Reservation updatereservation(Reservation reservation) {
+    public Reservation updatereservation(Reservation reservation,Long resid) {
+        Reservation xres = reservationRepo.findById(resid).get();
+        xres.setCheckin(reservation.getCheckin());
+        xres.setCheckout(reservation.getCheckout());
+        xres.setStatus(reservation.getStatus());
+        xres.setSpecialrequests(reservation.getSpecialrequests());
 
         return reservationRepo.save(reservation);
     }

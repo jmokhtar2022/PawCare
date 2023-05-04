@@ -52,7 +52,8 @@ public class HotelController {
         return ihotel.addHotel(htl);
     }
 
-    @PostMapping("/updateHotel/{id}")
+    @PutMapping("/updateHotel/{id}")
+
     public Hotel updateHotel(@RequestBody Hotel hotel, @PathVariable("id") Long hotelid)
     {
         return ihotel.updateHotel(hotel,hotelid);

@@ -26,15 +26,15 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReservation;
    // @Temporal(TemporalType.DATE)
-   @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+   @JsonFormat(pattern = "yyyy-MM-dd")
    @Column(columnDefinition="DATETIME")
     private Date checkin;
     //@Temporal(TemporalType.DATE)
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column( columnDefinition="DATETIME")
     private Date checkout;
     private Status status;
-    private byte[] QRCode;
+    private String QRCode;
     private String specialrequests;
 
 }

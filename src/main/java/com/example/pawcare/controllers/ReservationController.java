@@ -14,12 +14,13 @@ import com.example.pawcare.entities.Reservation;
 import com.example.pawcare.services.reservation.Ireservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.ws.rs.core.Response;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Base64;
@@ -38,18 +39,34 @@ public class ReservationController {
     @PostMapping("/addreservation")
     public Reservation addReservation(@RequestBody Reservation reservation )
     {
+        String path="C:\\Users\\Firas\\Desktop\\qr\\";
+
+        String qrname= "reservation"+reservation.getPet()+reservation.getStatus();
+
+        reservation.setQRCode(qrname);
+
+        try {
+            generateQRCodeImage(reservation.getStatus().toString(), 250, 250, path+qrname +".jpg");
+        }
+        catch (WriterException | IOException e) {
+            e.printStackTrace();
+        }
+
         return ireservation.addreservation(reservation);
+
     }
 
-    @PostMapping("/updatereservation")
-    public Reservation updateReservation(@RequestBody Reservation reservation)
+    @PutMapping("/updatereservation/{id}")
+    public Reservation updateReservation(@RequestBody Reservation reservation,@PathVariable("id") Long id)
     {
-        return ireservation.updatereservation(reservation);
+
+        return ireservation.updatereservation(reservation,id);
     }
 
     @GetMapping("/findreservation/{id}")
     public Reservation retrieveReservation(@PathVariable("id") Long reservationId)
     {
+
         return ireservation.retrievereservation(reservationId);
     }
 
@@ -70,22 +87,14 @@ public class ReservationController {
         try {
             BitMatrix bitMatrix=qrCodeWriter.encode(txt, BarcodeFormat.QR_CODE,width,height);
             outputStream=new ByteArrayOutputStream();
-            MatrixToImageWriter.writeToStream(bitMatrix,"PNG",outputStream);
+            MatrixToImageWriter.writeToStream(bitMatrix,"jpg",outputStream);
         }catch (WriterException | IOException e){
             e.printStackTrace();
         }
         return outputStream.toByteArray();
     }
 
-    /*public static void GenerateImageQRCode(String txt, int width, int height, String path){
-        QRCodeWriter qrCodeWriter=new QRCodeWriter();
-        try {
-            BitMatrix bitMatrix=qrCodeWriter.encode(txt,BarcodeFormat.QR_CODE,width,height);
-            MatrixToImageWriter.writeToPath(bitMatrix,"PNG", FileSystems.getDefault().getPath(path));
-        }catch (WriterException | IOException e){
-            e.printStackTrace();
-        }
-    }*/
+
 
     private final String imagepath= "./src/main/resources/qr";
     @GetMapping("/findreservationby/{id}")
@@ -94,6 +103,20 @@ public class ReservationController {
         GenerateByteQRCode(reservationId.toString(),250,250,imagepath);
         return ireservation.retrievereservation(reservationId);
     }
+
+    public static void generateQRCodeImage(String text, int width, int height, String filePath)
+            throws WriterException, IOException {
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+
+        Path path = FileSystems.getDefault().getPath(filePath);
+        MatrixToImageWriter.writeToPath(bitMatrix, "jpg", path);
+
+    }
+
+
+
+
    /* @GetMapping("/qrcode/{id}")
     public Response getReservationQRCode(@PathVariable("id")Long reservationId){
         Reservation reservation=ireservation.retrievereservation(reservationId);
