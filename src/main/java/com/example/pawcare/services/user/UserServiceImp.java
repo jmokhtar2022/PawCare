@@ -71,7 +71,6 @@ public class UserServiceImp implements UserDetailsService , IUserService{
 
     @Override
     public User retrieveUser(Long id) {
-
         return iUserRepository.findById(id).get();
     }
 
@@ -106,6 +105,7 @@ public class UserServiceImp implements UserDetailsService , IUserService{
                 }
             }
             user.setRoles(roles);
+
             iUserRepository.save(user);
             return user;
         }
