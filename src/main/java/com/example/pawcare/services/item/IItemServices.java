@@ -2,6 +2,7 @@ package com.example.pawcare.services.item;
 
 import com.example.pawcare.entities.Accessory;
 import com.example.pawcare.entities.Item;
+import com.example.pawcare.entities.OrderStatus;
 import com.example.pawcare.entities.User;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -60,5 +61,7 @@ public interface IItemServices {
     public List<Accessory> getAccessoriesByOrderId(Long orderId) ;
     public User getUserByIdOrder(Long idOrder) ;
     public byte[] generateBillPdf(Long itemId) throws IOException ;
+    public List<Item> getPaidOrders() ;
+    public List<Item> getNotPaidOrders() ;
 
-}
+    }

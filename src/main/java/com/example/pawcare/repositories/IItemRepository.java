@@ -2,6 +2,7 @@ package com.example.pawcare.repositories;
 
 import com.example.pawcare.entities.Accessory;
 import com.example.pawcare.entities.Item;
+import com.example.pawcare.entities.OrderStatus;
 import com.example.pawcare.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +16,5 @@ public interface IItemRepository extends JpaRepository<Item,Long> {
     List<Accessory> findAccessoriesByOrderId(@Param("idOrder") Long orderId);
 
     Item findByIdItem(Long idOrder);
-
+    List<Item> findByOrderstatus(OrderStatus orderstatus);
 }

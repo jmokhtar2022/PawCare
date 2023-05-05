@@ -43,7 +43,7 @@ public class AccessoryController {
     @GetMapping("/listaccessories")
     public ResponseEntity<Page<Accessory>> getAccessoriesPage(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "6") int size,
             @RequestParam(defaultValue = "name") String sortField,
             @RequestParam(defaultValue = "asc") String sortDir) {
         // Retrieve the paginated and sorted list of accessories

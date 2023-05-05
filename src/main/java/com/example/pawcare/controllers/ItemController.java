@@ -117,6 +117,16 @@ public class ItemController {
         headers.setContentDisposition(ContentDisposition.builder("attachment").filename("bill.pdf").build());
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
+    @GetMapping("/paid")
+    public List<Item> getPaidOrders() {
+        return iItemServices.getPaidOrders();
+    }
+
+    @GetMapping("/notpaid")
+    public List<Item> getNotPaidOrders() {
+        return iItemServices.getNotPaidOrders();
+    }
+
 
 }
 

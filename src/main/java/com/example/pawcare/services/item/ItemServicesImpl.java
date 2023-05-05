@@ -302,6 +302,19 @@ public List<Accessory> getAccessoriesByOrderId(Long orderId) {
             return user;
         }
     }
+    @Override
+    public List<Item> getPaidOrders() {
+        OrderStatus orderStatus = OrderStatus.Paid;
 
+        return iItemRepository.findByOrderstatus(orderStatus);
+    }
+
+    @Override
+
+    public List<Item> getNotPaidOrders() {
+        OrderStatus orderStatus = OrderStatus.Delivery_in_progress;
+
+
+        return iItemRepository.findByOrderstatus(orderStatus);    }
 
 }
