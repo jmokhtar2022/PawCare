@@ -1,6 +1,9 @@
 package com.example.pawcare.controllers;
 
+import com.example.pawcare.entities.EmailDetails;
 import com.example.pawcare.entities.Hotel;
+import com.example.pawcare.services.mailapi.EmailService;
+import com.example.pawcare.services.mailapi.IEmail;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.WriterException;
@@ -13,10 +16,16 @@ import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.example.pawcare.entities.Reservation;
 import com.example.pawcare.services.reservation.Ireservation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
@@ -29,28 +38,67 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import javax.imageio.ImageIO;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 @RestController
 @RequestMapping("/reservation")
 @CrossOrigin(origins = "http://localhost:4200")
 public class ReservationController {
     @Autowired
     Ireservation ireservation;
+    @Autowired
+    IEmail emailService;
 
-    @PostMapping("/addreservation")
-    public Reservation addReservation(@RequestBody Reservation reservation )
+    @Autowired
+    private JavaMailSender javaMailSender;
+    @Value("${spring.mail.username}") private String sender;
+
+    @PostMapping("/addreservation/{email}")
+    public Reservation addReservation(@RequestBody Reservation reservation ,@PathVariable("email") String email)
     {
-        String path="C:\\Users\\Firas\\Desktop\\qr\\";
-
-        String qrname= "reservation"+reservation.getPet()+reservation.getStatus();
-
+        //String path="C:\\Users\\Firas\\Desktop\\qr\\";
+        String path="C:\\xampp\\htdocs\\qr\\";
+        String qrname=RandomStringGenerator.generate();
+        //String qrname= "reservation"+reservation.getStatus();
         reservation.setQRCode(qrname);
-
         try {
             generateQRCodeImage(reservation.getStatus().toString(), 250, 250, path+qrname +".jpg");
         }
         catch (WriterException | IOException e) {
             e.printStackTrace();
         }
+        //trying mail methode here
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper;
+        try {
+
+            // Setting multipart as true for attachments to
+            // be send
+            mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
+            mimeMessageHelper.setFrom(sender);
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setText("Hey! \n\n Your Reservation is sent successfully you can check the status of the reservation by scanning the qr code in the attechement \n\n Thanks");
+            mimeMessageHelper.setSubject("Reservation sent successfully");
+
+            // Adding the attachment
+            FileSystemResource file = new FileSystemResource(new File(path+qrname +".jpg"));
+
+            mimeMessageHelper.addAttachment(
+                    file.getFilename(), file);
+
+            // Sending the mail
+            javaMailSender.send(mimeMessage);
+
+        }
+
+        // Catch block to handle MessagingException
+        catch (MessagingException e) {
+
+            // Display message when exception occurred
+
+        }
+
 
         return ireservation.addreservation(reservation);
 
@@ -114,34 +162,34 @@ public class ReservationController {
 
     }
 
+    public static class RandomStringGenerator {
+        private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        private static final int LENGTH = 10;
 
-
-
-   /* @GetMapping("/qrcode/{id}")
-    public Response getReservationQRCode(@PathVariable("id")Long reservationId){
-        Reservation reservation=ireservation.retrievereservation(reservationId);
-        try {
-
-            Map<EncodeHintType, Object> hints = new HashMap<>();
-            hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(reservation.getIdReservation().toString(), BarcodeFormat.QR_CODE, 200, 200, hints);
-            BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
-
-            // Convert image to base64-encoded string
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(image, "png", baos);
-            byte[] imageData = baos.toByteArray();
-            String imageBase64 = Base64.getEncoder().encodeToString(imageData);
-
-            // Return JSON response with QR code image
-            Map<String, String> responseMap = new HashMap<>();
-            responseMap.put("reservationCode", reservation.getIdReservation().toString());
-            responseMap.put("qrCode", imageBase64);
-            return Response.ok(responseMap).build();
-        }catch (WriterException | IOException e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        public static String generate() {
+            Random random = new SecureRandom();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < LENGTH; i++) {
+                int index = random.nextInt(CHARACTERS.length());
+                char randomChar = CHARACTERS.charAt(index);
+                sb.append(randomChar);
+            }
+            return sb.toString();
         }
-        }*/
+    }
+    @PostMapping("/sendMail")
+    public String sendMail(@RequestBody EmailDetails details)
+    {
+        String status = emailService.sendSimpleMail(details);
+
+        return status;
+    }
+
+    @PostMapping("/sendMailWithAttachment")
+    public String sendMailWithAttachment(@RequestBody EmailDetails details)
+    {
+        String status = emailService.sendMailWithAttachment(details);
+        return status;
+    }
     }
 

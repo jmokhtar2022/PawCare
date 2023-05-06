@@ -33,6 +33,7 @@ public class Reservation implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column( columnDefinition="DATETIME")
     private Date checkout;
+
     private Status status;
     private String QRCode;
     private String specialrequests;
