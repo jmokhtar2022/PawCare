@@ -88,6 +88,15 @@ public class User {
         this.phone= phone;
 
     }
+    public User(String username, String email, String password, int phone) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.phone= phone;
+
+    }
+
+
 
     public Long getId() {
         return id;

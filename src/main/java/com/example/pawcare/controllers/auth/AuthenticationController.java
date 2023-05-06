@@ -12,6 +12,7 @@ import com.example.pawcare.payload.Request.SignupRequest;
 
 import com.example.pawcare.payload.Response.MessageResponse;
 import com.example.pawcare.security.jwt.JwtService;
+import com.example.pawcare.services.user.EmailSenderService;
 import com.example.pawcare.services.user.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -53,8 +54,11 @@ public class AuthenticationController {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    EmailSenderService emailSenderService;
 
-    @PreAuthorize("hasRole('*')")
+
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody SigninRequest signinRequest)
     {
@@ -130,6 +134,8 @@ public class AuthenticationController {
         }
         user.setRoles(roles);
         iUserRepository.save(user);
+        emailSenderService.sendEmail(user.getEmail(),"Welcome to Pawcare ", "Dear " +
+                user.getUsername()+" \n Welcome to PawCare! Thank you for signing up. \n Best regards, \n PawCare Team");
 
         return ResponseEntity.ok(new MessageResponse("Marhbé bik!"));
 
