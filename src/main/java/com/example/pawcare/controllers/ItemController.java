@@ -1,20 +1,18 @@
 package com.example.pawcare.controllers;
 
 import com.example.pawcare.entities.Accessory;
-import com.example.pawcare.entities.OrderStatus;
 import com.example.pawcare.entities.User;
-import com.example.pawcare.repositories.IItemRepository;
 import com.example.pawcare.services.email.MailService;
 import com.example.pawcare.entities.Item;
 import com.example.pawcare.services.cart.CartServices;
 import com.example.pawcare.services.item.IItemServices;
+import com.example.pawcare.services.item.ItemReports.ItemReportServices;
 import com.example.pawcare.services.stripe.StripeService;
 import com.stripe.exception.StripeException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +30,8 @@ public class ItemController {
     private CartServices cartServices;
     @Autowired
     StripeService stripeService;
-
+    @Autowired
+    ItemReportServices itemReportServices;
     @GetMapping("/itemslist")
     public List<Item> retrieveAllItems() {
         return iItemServices.retrieveAllItems();
@@ -117,16 +116,10 @@ public class ItemController {
         headers.setContentDisposition(ContentDisposition.builder("attachment").filename("bill.pdf").build());
         return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
-    @GetMapping("/paid")
-    public List<Item> getPaidOrders() {
-        return iItemServices.getPaidOrders();
+    @GetMapping("/daily")
+    public void getDailyRevenueReport() {
+         itemReportServices.generateDailyRevenueReport();
     }
-
-    @GetMapping("/notpaid")
-    public List<Item> getNotPaidOrders() {
-        return iItemServices.getNotPaidOrders();
-    }
-
 
 }
 

@@ -230,7 +230,7 @@ public class ItemServicesImpl implements IItemServices {
 
             // Send an email to the user
             String email = getUserByIdOrder(orderId).getEmail();
-            String subject = "Your order has been paid";
+            String subject = "Your transaction has been successful";
             String body = "Thank you for your purchase ! Your payment of " + totalAmount + " DT has been received and your order will be shipped soon.";
             mailSender.sendEmail(email, subject, body);
 
@@ -302,19 +302,7 @@ public List<Accessory> getAccessoriesByOrderId(Long orderId) {
             return user;
         }
     }
-    @Override
-    public List<Item> getPaidOrders() {
-        OrderStatus orderStatus = OrderStatus.Paid;
-
-        return iItemRepository.findByOrderstatus(orderStatus);
-    }
-
-    @Override
-
-    public List<Item> getNotPaidOrders() {
-        OrderStatus orderStatus = OrderStatus.Delivery_in_progress;
 
 
-        return iItemRepository.findByOrderstatus(orderStatus);    }
 
 }

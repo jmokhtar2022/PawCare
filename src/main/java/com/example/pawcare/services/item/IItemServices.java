@@ -61,7 +61,6 @@ public interface IItemServices {
     public List<Accessory> getAccessoriesByOrderId(Long orderId) ;
     public User getUserByIdOrder(Long idOrder) ;
     public byte[] generateBillPdf(Long itemId) throws IOException ;
-    public List<Item> getPaidOrders() ;
-    public List<Item> getNotPaidOrders() ;
+
 
     }

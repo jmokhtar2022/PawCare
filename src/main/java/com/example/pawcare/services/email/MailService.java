@@ -28,7 +28,7 @@ public class MailService implements MailSender {
                     new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setText(body, true);
             helper.setTo(to);
-            helper.setSubject("Payment successful");
+            helper.setSubject(subject);
             helper.setFrom("pawco2023@gmail.com");
             mailSender.send(mimeMessage);
         }catch (MessagingException e){
