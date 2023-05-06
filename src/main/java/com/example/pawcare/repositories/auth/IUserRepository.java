@@ -29,4 +29,5 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
     @Query("select u from User u join u.roles r where r.name= 'ROLE_VETERINARY'")
     List<User>GetAllDoctors();
+
 }

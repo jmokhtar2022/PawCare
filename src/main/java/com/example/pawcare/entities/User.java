@@ -57,6 +57,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Set<Appointment> appointments;
 

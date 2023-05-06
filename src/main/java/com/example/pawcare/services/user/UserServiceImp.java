@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 
@@ -110,6 +111,16 @@ public class UserServiceImp implements UserDetailsService , IUserService{
             return user;
         }
         return null;
+    }
+    @Override
+    public List<User> findAvailableDoctors(LocalDateTime startDate, LocalDateTime endDate) {
+        return iUserRepository.findAvailableDoctors(startDate,endDate);
+    }
+    public  User GetDoctorByAptId(Long id){
+        return iUserRepository.GetDoctorByAptId(id);
+    }
+    public  List<User>GetAllDoctors(){
+        return iUserRepository.GetAllDoctors();
     }
 
     }
