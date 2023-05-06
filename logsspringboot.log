@@ -212,3 +212,5 @@
 2023-05-06 20:43:30.056  INFO 1796 --- [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8080 (http) with context path ''
 2023-05-06 20:43:30.069  INFO 1796 --- [restartedMain] com.example.pawcare.PawCareApplication   : Started PawCareApplication in 6.466 seconds (JVM running for 7.685)
 2023-05-06 20:48:35.745  INFO 1796 --- [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2023-05-06 20:48:35.746  INFO 1796 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2023-05-06 20:48:35.747  INFO 1796 --- [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms

@@ -1,6 +1,7 @@
 package com.example.pawcare.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -57,7 +58,11 @@ public class User {
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Appointment> appointments;
+    private Set<Appointment> appointments;
+
+    @JsonIgnore
+    @OneToMany(cascade = {CascadeType.ALL, CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "doctor", orphanRemoval = true)
+    private Set<Appointment> apt_doctors;
 
     @OneToMany (mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Item> items;

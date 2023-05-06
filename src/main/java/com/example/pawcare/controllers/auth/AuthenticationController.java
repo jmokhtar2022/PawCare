@@ -15,6 +15,7 @@ import com.example.pawcare.security.jwt.JwtService;
 import com.example.pawcare.services.user.EmailSenderService;
 import com.example.pawcare.services.user.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -138,8 +140,24 @@ public class AuthenticationController {
                 user.getUsername()+" \n Welcome to PawCare! Thank you for signing up. \n Best regards, \n PawCare Team");
 
         return ResponseEntity.ok(new MessageResponse("Marhbé bik!"));
+    }
 
+    @GetMapping("/findAvailableDoctors/{startDate}/{endDate}")
+    public List<User> findAvailableDoctors(@PathVariable("startDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate
+            , @PathVariable("endDate")@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime EndDate) {
+        return iUserRepository.findAvailableDoctors(startDate, EndDate);
+    }
 
+    @GetMapping("/GetDoctorByAptId/{id}")
+    public User GetDoctorByAptId(@PathVariable("id") Long id)
+    {
+        return iUserRepository.GetDoctorByAptId(id);
+    }
+
+    @GetMapping("/GetAllDoctors")
+    public List<User> GetAllDoctor()
+    {
+        return iUserRepository.GetAllDoctors();
     }
 
 }
