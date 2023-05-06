@@ -7,5 +7,4 @@ public enum Roles {
 
     ,ROLE_ADMIN
 
-
 }
