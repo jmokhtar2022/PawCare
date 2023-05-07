@@ -3,5 +3,8 @@ package com.example.pawcare.entities;
 public enum Reason {
     RoutineCheckup,
     Vaccination,
-    Surgery
+    Surgery,
+    Adoption,
+    Training,
+    Hotel_Reservation
 }

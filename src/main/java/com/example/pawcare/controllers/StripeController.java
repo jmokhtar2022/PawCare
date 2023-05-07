@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
-@CrossOrigin("*")
 @RequestMapping("/stripe")
 public class StripeController {
     @Autowired

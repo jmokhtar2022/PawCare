@@ -1,7 +1,7 @@
 package com.example.pawcare.services.item;
 import com.example.pawcare.entities.*;
 import com.example.pawcare.repositories.IItemRepository;
-import com.example.pawcare.repositories.IUserRepository;
+import com.example.pawcare.repositories.auth.IUserRepository;
 import com.example.pawcare.services.email.MailSender;
 import com.example.pawcare.services.stripe.StripeServiceImpl;
 import com.example.pawcare.services.cart.CartServices;

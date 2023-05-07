@@ -26,7 +26,6 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/accessory")
 public class AccessoryController {
     @Autowired

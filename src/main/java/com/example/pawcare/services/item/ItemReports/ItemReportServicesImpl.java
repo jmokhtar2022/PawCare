@@ -41,11 +41,15 @@ public class ItemReportServicesImpl implements ItemReportServices {
         // Generate report
         String report = String.format("Daily Revenue Report:\n\nPaid Revenue: %.2f\nUnpaid Revenue: %.2f", paidRevenue, unpaidRevenue);
 
-        // Send report to admin via email
-        String to = "liliyyy1758@gmail.com";
+
+        String to = "liliyyy1758@gmail.com"; //change with admin mail
         String subject = "Daily Report";
         String body = "Here's your daily report..."+report;
         mailSender.sendEmail(to, subject, body);
 
     }
+
+
+
+
 }

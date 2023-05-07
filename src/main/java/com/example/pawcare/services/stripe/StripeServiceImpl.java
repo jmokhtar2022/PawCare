@@ -1,6 +1,6 @@
 package com.example.pawcare.services.stripe;
 import com.example.pawcare.entities.*;
-import com.example.pawcare.repositories.IUserRepository;
+import com.example.pawcare.repositories.auth.IUserRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Charge;
@@ -17,7 +17,6 @@ import java.util.Map;
 public class StripeServiceImpl implements StripeService{
     @Autowired
     IUserRepository iUserRepository;
-
     @Override
     public String createStripeCustomer(Long idUser) {
         Stripe.apiKey = "sk_test_51N2AKQBKAkRPCxsKoph61XdywTfWSW9Q2XNr7zxhYIXkLozwrGATODSkJ928QgIwGocTJOvLxzW3HRaxhHR1sppy00GxTiuU0n";
