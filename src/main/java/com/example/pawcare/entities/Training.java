@@ -27,13 +27,9 @@ public class Training implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idTraining;
-    @NotBlank(message = "Title is required")
     private String title;
-    @NotBlank(message = "Duration is required")
     private long duration;
-    @NotBlank(message = "Price is required")
     private float price;
-    @NotBlank(message = "Number of places is required")
     private int nbrplaces;
     private Type type;
     @JsonFormat(shape = JsonFormat.Shape.STRING)

@@ -72,10 +72,19 @@ public class WebSecurityConfig  {
                   .disable()
                   .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
               .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-              .authorizeRequests().antMatchers("/api/auth/**").permitAll()
+              .authorizeRequests()
+                  //bilel et mokhtar
+                  .antMatchers("/api/auth/**").permitAll()
+                  .antMatchers("/api/users/**").permitAll()
+                  //hotel
                   .antMatchers("/hotel/**").permitAll()
                   .antMatchers("/reservation/**").permitAll()
-              .antMatchers("/api/users/**").permitAll()
+                  //rania
+                  .antMatchers("/adoption/**").permitAll()
+                  .antMatchers("/commentAdoption/**").permitAll()
+                  .antMatchers("/email/**").permitAll()
+                  .antMatchers("/training/**").permitAll()
+
              .anyRequest().authenticated();
 
          http.authenticationProvider(authenticationProvider());
