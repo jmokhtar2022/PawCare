@@ -54,6 +54,7 @@ public class ArticleController {
     }
     @GetMapping("/{id}")
     public Article getArticleById(@PathVariable Long id) {
+
         return articleService.retrieveArticleById(id);
     }
 

@@ -23,7 +23,7 @@ public class Article implements Serializable {
     private Long id;
     private String title;
     private String content;
-    private Long nbviews;
+    private int nbviews=0;
     private int nblike=0;
     private int nbdislike=0;
     private int nbcomments=0;
