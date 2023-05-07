@@ -20,13 +20,49 @@ public class Article implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idArticle;
+    private Long id;
     private String title;
     private String content;
-    private Long nbViews;
-    private int nblike;
-    private int nbdislike;
-    private int nbcomments;
+    private Long nbviews;
+    private int nblike=0;
+    private int nbdislike=0;
+    private int nbcomments=0;
     private String tags;
     private String media;
+
+    public void incrementNbComments() {
+        this.nbcomments++;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getMedia() {
+        return media;
+    }
+
+    public void setMedia(String media) {
+        this.media = media;
+    }
 }

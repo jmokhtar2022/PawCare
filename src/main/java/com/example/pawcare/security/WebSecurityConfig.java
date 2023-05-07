@@ -84,6 +84,9 @@ public class WebSecurityConfig  {
                   .antMatchers("/commentAdoption/**").permitAll()
                   .antMatchers("/email/**").permitAll()
                   .antMatchers("/training/**").permitAll()
+                  //ahmed
+                  .antMatchers("/articles/**").permitAll()
+                  .antMatchers("/comments/**").permitAll()
 
              .anyRequest().authenticated();
 
