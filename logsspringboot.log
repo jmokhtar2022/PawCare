@@ -1,9 +1,0 @@
-2023-05-03 09:21:01.517  WARN 5772 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=11h5m36s89ms947µs800ns).
-2023-05-03 10:21:49.769  WARN 5772 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m16s531ms612µs400ns).
-2023-05-03 11:01:59.406  WARN 5772 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=28m39s494ms124µs200ns).
-2023-05-03 13:41:45.979  WARN 5772 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2h25m46s327ms414µs100ns).
-2023-05-03 14:57:06.457  WARN 5772 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m19s410ms951µs200ns).
-2023-05-03 15:38:12.019  WARN 5772 --- [HikariPool-1 housekeeper] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=22m5s265ms52µs200ns).
-2023-05-03 15:39:44.619  INFO 5772 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
-2023-05-03 15:39:44.627  INFO 5772 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
-2023-05-03 15:39:44.627  INFO 5772 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
