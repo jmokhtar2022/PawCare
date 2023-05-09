@@ -7,6 +7,7 @@ import com.example.pawcare.repositories.auth.IUserRepository;
 import com.example.pawcare.services.user.UserServiceImp;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -59,6 +60,10 @@ public class UserController {
         return ResponseEntity.ok(updatedUser);
     }
 
+    @GetMapping("/checkUser")
+    public boolean findUserByEnabledIsTrue(@RequestParam String username) {
+        return iUserRepository.existsByEnabledIsTrueAndUsername(username);
+    }
     @DeleteMapping("/deleteuser")
     public void deleteUser( Long id){
         iUserRepository.deleteById(id);

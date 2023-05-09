@@ -17,6 +17,13 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u.username, u.email, r.name FROM User u JOIN u.roles r")
     List<Object[]> GetAllUsers();
 
+    @Query("SELECT u FROM User u WHERE u.verificationCode = ?1")
+    User findByVerificationCode(String code);
+
+    /*@Query("SELECT u FROM User u WHERE u.enabled = true and u.username= ?1")
+    Boolean existsByEnabledIsTrueAndUsername(String username);*/
+    @Query("SELECT u.enabled FROM User u WHERE u.username = ?1")
+    boolean existsByEnabledIsTrueAndUsername(String username);
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
 

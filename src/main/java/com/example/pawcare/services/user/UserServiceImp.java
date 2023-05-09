@@ -43,6 +43,21 @@ public class UserServiceImp implements UserDetailsService , IUserService{
         return iUserRepository.findAll();
     }
 
+    public boolean verify(String verificationCode) {
+        User user = iUserRepository.findByVerificationCode(verificationCode);
+
+        if (user == null || user.isEnabled()) {
+            return false;
+        } else {
+            user.setVerificationCode(null);
+            user.setEnabled(true);
+            iUserRepository.save(user);
+
+            return true;
+        }
+
+    }
+
 
     @Override
     public void deleteUser(Long id) {
