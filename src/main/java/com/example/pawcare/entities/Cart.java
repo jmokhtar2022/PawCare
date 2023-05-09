@@ -1,5 +1,6 @@
 package com.example.pawcare.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,10 +15,11 @@ public class Cart implements Serializable {
     @OneToOne
     private Item item;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Accessory> accessories;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCart;
     private float totalCart;
+
 }
