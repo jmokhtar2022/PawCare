@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +41,6 @@ public class WebSecurityConfig  {
     public JwtAuthenticationFilter authenticationJwtTokenFilter() {
         return new JwtAuthenticationFilter();
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -75,8 +75,17 @@ public class WebSecurityConfig  {
               .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                   .antMatchers("/hotel/**").permitAll()
                   .antMatchers("/reservation/**").permitAll()
-              .antMatchers("/api/users/**").permitAll()
-             .anyRequest().authenticated();
+                  .antMatchers("/api/users/**").permitAll()
+                  .antMatchers("/order/**").permitAll()
+                  .antMatchers("/accessory/**").permitAll()
+                  .antMatchers("/stripe/**").permitAll()
+                  .antMatchers("/cart/**").permitAll()
+                  .antMatchers("/pawcareupload/**").permitAll()
+                  .antMatchers("/accessories/**").permitAll()
+                  .antMatchers("/listaccessories/**").permitAll()
+                .antMatchers("/addAccessoryUpload1/**").permitAll()
+
+                  .anyRequest().authenticated();
 
          http.authenticationProvider(authenticationProvider());
 
@@ -84,6 +93,9 @@ public class WebSecurityConfig  {
 
          return http.build();
        }
+
+
+
     /** public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http//.cors().and().csrf().disable()
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()

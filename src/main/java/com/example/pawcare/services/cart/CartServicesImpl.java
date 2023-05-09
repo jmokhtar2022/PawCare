@@ -1,6 +1,5 @@
 package com.example.pawcare.services.cart;
 
-import com.example.pawcare.repositories.auth.IUserRepository;
 import com.example.pawcare.services.email.MailService;
 import com.example.pawcare.entities.Accessory;
 import com.example.pawcare.entities.Cart;
@@ -8,6 +7,7 @@ import com.example.pawcare.entities.Item;
 import com.example.pawcare.entities.User;
 import com.example.pawcare.repositories.IAccessoryRepository;
 import com.example.pawcare.repositories.ICartRepository;
+import com.example.pawcare.repositories.auth.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

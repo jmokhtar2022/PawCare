@@ -26,6 +26,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/accessory")
 public class AccessoryController {
     @Autowired
@@ -40,6 +41,7 @@ public class AccessoryController {
           return accessoryServices.retrieveAllAccessories();
       }
     @GetMapping("/listaccessories")
+
     public ResponseEntity<Page<Accessory>> getAccessoriesPage(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "6") int size,
@@ -63,6 +65,9 @@ public class AccessoryController {
         return accessoryServices.updateAccessory(idAccessory, accessory);
 
     }*/
+
+
+
    @PutMapping("/updateAccessory/{idAccessory}")
    @ResponseBody
    public Map<String, Object> updateAccessory(@PathVariable("idAccessory") Long idAccessory,
