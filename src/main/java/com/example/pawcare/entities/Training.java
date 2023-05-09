@@ -1,6 +1,7 @@
 package com.example.pawcare.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.FetchMode;
@@ -21,7 +22,8 @@ import java.util.List;
 @Setter
 public class Training implements Serializable {
 
-    @ManyToMany(mappedBy = "trainings")
+    @ManyToMany(mappedBy = "trainings",cascade=CascadeType.ALL,fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<Pet> pets;
 
     @Id

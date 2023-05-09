@@ -27,7 +27,7 @@ public class CommentAdoptionServiceImpl implements ICommentAdoptionServices {
     private CommentFilter commentFilter;
 
 
-    private CommentAdoptionServiceImpl(){}
+     CommentAdoptionServiceImpl(){}
 
     @Override
 

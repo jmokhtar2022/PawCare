@@ -50,7 +50,7 @@ public class Pet implements Serializable {
     @JsonIgnoreProperties("pet")
     private Set<Appointment> appointments;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet")
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER,mappedBy = "pet",orphanRemoval = true)
     private Adoption adoption;
 
     @ManyToMany

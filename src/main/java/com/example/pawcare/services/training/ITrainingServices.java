@@ -20,7 +20,7 @@ public interface ITrainingServices {
     public long getCatTrainingCount();
     List<ReportTraining> getReportTrainings();
     public List<ReportTraining> getReportsByTraining(Long idTrainign);
-    public ResponseEntity<String> decreaseAvailablePlaces(Long idTraining);
+    public Training decreaseAvailablePlaces(Long idTraining,Long idPet);
 
 
 

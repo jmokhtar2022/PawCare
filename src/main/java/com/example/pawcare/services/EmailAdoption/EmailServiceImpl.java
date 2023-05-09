@@ -38,8 +38,9 @@ public class EmailServiceImpl implements EmailService {
         }
         // Catch block to handle the exceptions
         catch (Exception e) {
-            return "Error while Sending Mail";
+            return e.getMessage();
         }
+
     }
 
     @Scheduled(cron = "0 0 9 * * *") // runs every day at 9am

@@ -39,7 +39,7 @@ public class AppointmentServicesImp implements IAppointmentServices {
 
     @Override
     public Appointment AddAppointment(Appointment appointment) {
-        appointment.setUser(GetUserFromSession());
+       // appointment.setUser(GetUserFromSession());
         appointment.setStatus(Status.Confirmed);
         if ((appointment.getReason()== Reason.Adoption) || (appointment.getReason()== Reason.Training) || (appointment.getReason()== Reason.Hotel_Reservation))
         {
@@ -54,7 +54,7 @@ public class AppointmentServicesImp implements IAppointmentServices {
         Appointment existingAppointment = appointmentRepository.findById(id).orElse(null);
         if (existingAppointment != null) {
             existingAppointment.setPet(updatedAppointment.getPet());
-            existingAppointment.setUser(GetUserFromSession());
+          //  existingAppointment.setUser(GetUserFromSession());
             existingAppointment.setStartDate(updatedAppointment.getStartDate());
             existingAppointment.setEndDate(updatedAppointment.getEndDate());
             existingAppointment.setReason(updatedAppointment.getReason());

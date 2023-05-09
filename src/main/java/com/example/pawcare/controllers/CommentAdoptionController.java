@@ -1,6 +1,7 @@
 package com.example.pawcare.controllers;
 
 import com.example.pawcare.entities.CommentAdoption;
+import com.example.pawcare.services.CommentAdoption.CommentAdoptionServiceImpl;
 import com.example.pawcare.services.CommentAdoption.FilterComments;
 import com.example.pawcare.services.CommentAdoption.ICommentAdoptionServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.util.List;
 public class CommentAdoptionController {
 
     @Autowired
-    private ICommentAdoptionServices commentAdoptionServices;
+    CommentAdoptionServiceImpl commentAdoptionServices;
 
     @PostMapping("/{idAdoption}")
     @FilterComments

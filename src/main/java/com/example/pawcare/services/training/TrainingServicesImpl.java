@@ -1,9 +1,8 @@
 package com.example.pawcare.services.training;
 
-import com.example.pawcare.entities.CommentAdoption;
-import com.example.pawcare.entities.ReportTraining;
-import com.example.pawcare.entities.Training;
-import com.example.pawcare.entities.Type;
+import com.example.pawcare.entities.*;
+import com.example.pawcare.repositories.IAppointmentRepository;
+import com.example.pawcare.repositories.IPetRepository;
 import com.example.pawcare.repositories.IReportTrainingRepository;
 import com.example.pawcare.repositories.ITrainingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +12,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +24,14 @@ public class TrainingServicesImpl implements ITrainingServices {
     ITrainingRepository trainingRepository;
     @Autowired
     IReportTrainingRepository reportTrainingRepository;
-    private TrainingServicesImpl(){}
+
+    @Autowired
+    IPetRepository petRepository;
+
+    @Autowired
+    IAppointmentRepository appointmentRepository;
+
+     TrainingServicesImpl(){}
     @Override
     public Training AddTraining(Training training) {return trainingRepository.save(training);}
     @Override
@@ -39,7 +47,19 @@ public class TrainingServicesImpl implements ITrainingServices {
     {
         return trainingRepository.findById(idTraining).get();
     }
-    public Training DeleteTraining(long idTraining) {trainingRepository.deleteById(idTraining); return null;}
+
+    public Training DeleteTraining(long idTraining) {
+        Training training = trainingRepository.findById(idTraining)
+                .orElseThrow(() -> new EntityNotFoundException("Training not found"));
+
+        // remove the relationship between the training and the pets
+        training.getPets().forEach(pet -> pet.getTrainings().remove(training));
+
+        // delete the training
+        trainingRepository.delete(training);
+        return training;
+
+        }
 
     public void reportTraining(Training training, String message) {
         ReportTraining report = new ReportTraining();
@@ -73,21 +93,13 @@ public class TrainingServicesImpl implements ITrainingServices {
 
 
 
-    public ResponseEntity<String> decreaseAvailablePlaces(Long idTraining) {
-        Optional<Training> optionalTraining = trainingRepository.findById(idTraining);
-        if (optionalTraining.isPresent()) {
-            Training training = optionalTraining.get();
-            int availablePlaces = training.getNbrplaces();
-            if (availablePlaces > 0) {
-                training.setNbrplaces(availablePlaces - 1);
-                trainingRepository.save(training);
-                return ResponseEntity.ok().build();
-            } else {
-                return ResponseEntity.badRequest().body("No available places");
-            }
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public Training decreaseAvailablePlaces(Long idTraining,Long idPet) {
+        Training training=trainingRepository.findById(idTraining).get();
+        Pet pet= petRepository.findById(idPet).get();
+        pet.getTrainings().add(training);
+        int availablePlaces = training.getNbrplaces();
+        training.setNbrplaces(availablePlaces - 1);
+        return trainingRepository.save(training);
     }
 
 
