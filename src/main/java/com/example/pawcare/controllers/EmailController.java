@@ -14,15 +14,14 @@ public class EmailController {
     @Autowired private EmailService emailService;
 
     // Sending a simple Email
-    @PostMapping("/sendMail")
+ /*   @PostMapping("/sendMail")
     public String
     sendMail(@RequestBody EmailDetails details)
     {
-        String status
-                = emailService.sendSimpleMail(details);
+        String status = emailService.sendSimpleMail(details);
         return status;
     }
-
+*/
     @PostMapping("/send-email")
     public ResponseEntity<String> sendEmail(@RequestBody EmailDetails details) {
         String result = emailService.sendSimpleMail(details);

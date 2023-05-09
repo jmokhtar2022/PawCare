@@ -1,8 +1,10 @@
 package com.example.pawcare.controllers;
 
 import com.example.pawcare.entities.*;
+import com.example.pawcare.repositories.IPetRepository;
 import com.example.pawcare.repositories.ITrainingRepository;
 import com.example.pawcare.services.training.ITrainingServices;
+import com.example.pawcare.services.training.TrainingServicesImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,9 @@ import java.util.stream.Collectors;
 
 public class TrainingController {
     @Autowired
-    ITrainingServices trainingServices;
+    TrainingServicesImpl trainingServices;
 ITrainingRepository trainingRepository;
+IPetRepository petRepository;
     @PostMapping("/training")
     public Training AddTraining(@RequestBody Training training) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
@@ -121,9 +124,9 @@ ITrainingRepository trainingRepository;
 
 
 
-    @PutMapping("/{idTraining}/booking")
-    public ResponseEntity<String> decreaseAvailablePlaces(@PathVariable Long idTraining) {
-     return trainingServices.decreaseAvailablePlaces(idTraining);
+  @PostMapping("/{idPet}/{idTraining}/booking")
+    public Training decreaseAvailablePlaces(@PathVariable Long idTraining,@PathVariable Long idPet) {
+     return trainingServices.decreaseAvailablePlaces(idTraining,idPet);
     }
 
 

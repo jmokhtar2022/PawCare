@@ -2,6 +2,7 @@ package com.example.pawcare.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ import java.util.List;
 public class Adoption implements Serializable {
 
     @OneToOne
+    @JsonIgnore
     private Pet pet;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,12 +43,6 @@ public class Adoption implements Serializable {
     private List<CommentAdoption> comment = new ArrayList<>();
 
 
-
-
-
-
-
-
-
-
+    public Adoption() {
+    }
 }

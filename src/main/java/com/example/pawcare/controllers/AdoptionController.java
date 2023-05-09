@@ -3,8 +3,11 @@ package com.example.pawcare.controllers;
 
 import com.example.pawcare.entities.Adoption;
 import com.example.pawcare.entities.CommentAdoption;
+import com.example.pawcare.entities.Pet;
 import com.example.pawcare.repositories.IAdoptionRepository;
 import com.example.pawcare.repositories.ICommentAdoptionRepository;
+import com.example.pawcare.repositories.IPetRepository;
+import com.example.pawcare.services.adoption.AdoptionServicesImpl;
 import com.example.pawcare.services.adoption.IAdoptionServices;
 import org.springdoc.api.OpenApiResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -28,16 +32,21 @@ import java.util.List;
 @RequestMapping("/adoption")
 public class AdoptionController {
     @Autowired
-    IAdoptionServices adoptionServices;
+    AdoptionServicesImpl adoptionServices;
     @Autowired
     IAdoptionRepository adoptionRepository;
+    @Autowired
+    IPetRepository petRepository;
 
 
 
     @PostMapping( "/adoption")
-    public Adoption AddAdoption(@ModelAttribute Adoption adoption, @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
+    public Adoption AddAdoption(@ModelAttribute Adoption adoption, @RequestParam("IdPet") Long IdPet, @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
         LocalDate  currentDate = LocalDate.now();
         adoption.setCDate(currentDate);
+        Optional<Pet> optionalPet = petRepository.findById(IdPet);
+        Pet pet = optionalPet.get();
+        adoption.setPet(pet);
         if (!imageFile.isEmpty()) {
             // Generate a unique filename for the uploaded file
             String fileName =imageFile.getOriginalFilename();
