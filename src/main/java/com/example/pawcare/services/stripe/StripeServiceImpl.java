@@ -1,5 +1,6 @@
 package com.example.pawcare.services.stripe;
-import com.example.pawcare.entities.*;
+
+import com.example.pawcare.entities.User;
 import com.example.pawcare.repositories.auth.IUserRepository;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;

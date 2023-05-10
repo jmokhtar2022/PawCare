@@ -87,6 +87,10 @@ public class WebSecurityConfig  {
                   //ahmed
                   .antMatchers("/articles/**").permitAll()
                   .antMatchers("/comments/**").permitAll()
+                  .antMatchers("/stripe/**").permitAll()
+                  .antMatchers("/order/**").permitAll()
+                  .antMatchers("/accessory/**").permitAll()
+                  .antMatchers("/cart/**").permitAll()
 
              .anyRequest().authenticated();
 
