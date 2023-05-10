@@ -1,12 +1,19 @@
 package com.example.pawcare.services.cart;
 
+<<<<<<< HEAD
+=======
+import com.example.pawcare.services.email.MailService;
+>>>>>>> 6a9f49c22009bf5553cb1702dc1d4d30cdba0fd2
 import com.example.pawcare.entities.Accessory;
 import com.example.pawcare.entities.Cart;
 import com.example.pawcare.entities.Item;
 import com.example.pawcare.repositories.IAccessoryRepository;
 import com.example.pawcare.repositories.ICartRepository;
 import com.example.pawcare.repositories.auth.IUserRepository;
+<<<<<<< HEAD
 import com.example.pawcare.services.email.MailService;
+=======
+>>>>>>> 6a9f49c22009bf5553cb1702dc1d4d30cdba0fd2
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

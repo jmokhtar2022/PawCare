@@ -23,6 +23,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 @Configuration
 @EnableWebSecurity
@@ -40,7 +41,6 @@ public class WebSecurityConfig  {
     public JwtAuthenticationFilter authenticationJwtTokenFilter() {
         return new JwtAuthenticationFilter();
     }
-
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider(){
@@ -79,6 +79,7 @@ public class WebSecurityConfig  {
                   //hotel
                   .antMatchers("/hotel/**").permitAll()
                   .antMatchers("/reservation/**").permitAll()
+<<<<<<< HEAD
                   //rania
                   .antMatchers("/adoption/**").permitAll()
                   .antMatchers("/commentAdoption/**").permitAll()
@@ -93,6 +94,19 @@ public class WebSecurityConfig  {
                   .antMatchers("/cart/**").permitAll()
 
              .anyRequest().authenticated();
+=======
+                  .antMatchers("/api/users/**").permitAll()
+                  .antMatchers("/order/**").permitAll()
+                  .antMatchers("/accessory/**").permitAll()
+                  .antMatchers("/stripe/**").permitAll()
+                  .antMatchers("/cart/**").permitAll()
+                  .antMatchers("/pawcareupload/**").permitAll()
+                  .antMatchers("/accessories/**").permitAll()
+                  .antMatchers("/listaccessories/**").permitAll()
+                .antMatchers("/addAccessoryUpload1/**").permitAll()
+
+                  .anyRequest().authenticated();
+>>>>>>> 6a9f49c22009bf5553cb1702dc1d4d30cdba0fd2
 
          http.authenticationProvider(authenticationProvider());
 
@@ -100,6 +114,9 @@ public class WebSecurityConfig  {
 
          return http.build();
        }
+
+
+
     /** public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http//.cors().and().csrf().disable()
                 //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
