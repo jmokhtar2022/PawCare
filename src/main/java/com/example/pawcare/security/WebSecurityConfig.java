@@ -85,7 +85,8 @@ public class WebSecurityConfig  {
                   .antMatchers("/email/**").permitAll()
                   .antMatchers("/training/**").permitAll()
 
-             .anyRequest().authenticated();
+             .anyRequest().authenticated().and()
+                  .rememberMe().key("my-key").tokenValiditySeconds(260000);
 
          http.authenticationProvider(authenticationProvider());
 

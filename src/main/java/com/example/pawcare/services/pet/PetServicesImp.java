@@ -30,7 +30,7 @@ public class PetServicesImp implements IPetServices{
     public Pet AddPet(Pet pet) throws IOException {
        String imagePet=pet.getPicture();
         String fileName = imagePet.substring(imagePet.lastIndexOf("\\") + 1);
-        moveFile("C://Users//jmokh//OneDrive//Bureau//"+fileName,"F://piLastVersion//src//assets//Petimages//"+pet.getName()+".jpg");
+        moveFile("C://Users//jmokh//OneDrive//Bureau//"+fileName,"D://User-apt//PawCareAngular//src//assets//Petimages//"+pet.getName()+".jpg");
         pet.setPicture(pet.getName()+".jpg");
         return petRepository.save(pet);
     }
@@ -51,9 +51,9 @@ public class PetServicesImp implements IPetServices{
 
             if (!oldName.equals(newName)) {
                 String fileName = updatePet.getPicture().substring(updatePet.getPicture().lastIndexOf("\\") + 1);
-                File sourceFile = new File("F://piLastVersion//src//assets//Petimages//" + oldName + ".jpg");
+                File sourceFile = new File("D://User-apt//PawCareAngular//src//assets//Petimages//" + oldName + ".jpg");
                 sourceFile.delete();
-                moveFile("C://Users//jmokh//OneDrive//Bureau//" + fileName, "F://piLastVersion//src//assets//Petimages//" + updatePet.getName() + ".jpg");
+                moveFile("C://Users//jmokh//OneDrive//Bureau//" + fileName, "D://User-apt//PawCareAngular//src//assets//Petimages//" + updatePet.getName() + ".jpg");
                 existingPet.setPicture(updatePet.getName() + ".jpg");
             } else {
                 existingPet.setPicture(updatePet.getPicture());
@@ -88,7 +88,7 @@ public class PetServicesImp implements IPetServices{
                     appointmentRepository.delete(appointment);
                 }
             }
-            File sourceFile = new File("F://piLastVersion//src//assets//Petimages//" + existingPet.getName() + ".jpg");
+            File sourceFile = new File("D://User-apt//PawCareAngular//src//assets//Petimages//" + existingPet.getName() + ".jpg");
             sourceFile.delete();
             petRepository.delete(existingPet);
         }
